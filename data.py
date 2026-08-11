@@ -205,7 +205,9 @@ ACTIVITIES = [
         "title": "Tour de manglares en bote",
         "description": "Recogida en el hotel a las 08:00 para un recorrido en bote por los manglares, observando aves y fauna local.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Reserva en Viator", "url": "https://www.viator.com/es-ES/account/booking/207419560/1750567673/1367730895/summary"},
+        ],
     },
     {
         "id": "parque-nacional-manuel-antonio",
