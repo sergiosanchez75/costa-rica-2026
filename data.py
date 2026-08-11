@@ -174,7 +174,9 @@ ACTIVITIES = [
         "title": "Puentes Colgantes de Mistico",
         "description": "Recorrido guiado por el bosque nuboso a través de los puentes colgantes, con vistas al volcán Arenal.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Voucher Puentes Colgantes Mistico", "url": "https://drive.google.com/file/d/1p19lmTYQLf4FiYDsQjatOQ3c_GDytfZc/view?usp=drive_link"},
+        ],
     },
     {
         "id": "ecotermales",
@@ -206,7 +208,7 @@ ACTIVITIES = [
         "description": "Recogida en el hotel a las 08:00 para un recorrido en bote por los manglares, observando aves y fauna local.",
         "photos_url": None,
         "docs": [
-            {"label": "Reserva en Viator", "url": "https://www.viator.com/es-ES/account/booking/207419560/1750567673/1367730895/summary"},
+            {"label": "Voucher tour manglares", "url": "https://drive.google.com/file/d/1UkeQpsG00TU5xKVJ0mSmNuaM02j-NFyd/view?usp=drive_link"},
         ],
     },
     {
@@ -217,7 +219,9 @@ ACTIVITIES = [
         "title": "Parque Nacional Manuel Antonio",
         "description": "Visita guiada al parque nacional: fauna y playas dentro del parque. Tarde libre de playa.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Entrada PN Manuel Antonio", "url": "https://drive.google.com/file/d/1OfjBzH6Ilkcy9IUcq5rH7jUDmTArTJUM/view?usp=drive_link"},
+        ],
     },
     {
         "id": "ballenas-uvita",
@@ -227,7 +231,9 @@ ACTIVITIES = [
         "title": "Avistamiento de ballenas en Uvita",
         "description": "Excursión en barco hasta Uvita para el avistamiento de ballenas. Tarde de playa y despedida de Manuel Antonio.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Voucher tour ballenas", "url": "https://drive.google.com/file/d/1wAB3lNp2-1u2uitMXSvS1kc1c53UbuCo/view?usp=drive_link"},
+        ],
     },
 ]
 
