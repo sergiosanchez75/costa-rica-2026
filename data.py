@@ -337,7 +337,7 @@ MISC_DOCS = [
 # Mientras EXPENSES_API_URL este en None, la pagina de Gastos muestra un
 # hueco explicando como conectarlo.
 
-EXPENSES_API_URL = None
+EXPENSES_API_URL = "https://script.google.com/macros/s/AKfycbyoUSH_xYhEDM1InzxfDzLNbpqRJ2Zpo-Yb2gOAOBQbnwkZwSW1QRhT5uH2VgRjBqZEhw/exec"
 
 EXPENSE_CATEGORIES = [
     {"label": "Avión", "color": "#6e5d8c"},

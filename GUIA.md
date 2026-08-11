@@ -58,8 +58,9 @@ A partir de ahí, todo se hace desde la web: el botón **+** abre un formulario 
 
 Notas:
 - `Tipo de Gasto` solo puede ser uno de los valores de `EXPENSE_CATEGORIES` en `data.py` (Avión, Hoteles, Transportes, Actividades, Comidas, Snacks, Compras Varias, Seguro Viaje, eSim) — el desplegable del formulario ya los ofrece, no hace falta escribirlos a mano.
-- Si algún día vuelves a desplegar el script (por ejemplo tras editarlo), Apps Script te da una URL `/exec` nueva — actualízala en `data.py`.
 - Privacidad: la URL de Apps Script solo la conocéis quienes la tengan (no está indexada ni es adivinable), pero no está protegida por la contraseña de Gastos en sí misma — es el mismo nivel de privacidad que los enlaces de Drive que ya usas para documentos.
+
+**Si vuelves a tocar el código del script más adelante**: en Apps Script, guardar el código NO actualiza la URL `/exec` que ya está en marcha — hace falta volver a desplegar. Lo más fiable es **Implementar → Nueva implementación** (te da una URL nueva, que hay que actualizar en `EXPENSES_API_URL`) en vez de editar la implementación existente, que a veces no aplica bien el código nuevo ni mantiene el "Cualquier usuario" en el acceso.
 
 ## Publicar en GitHub Pages (para abrir la web desde el móvil)
 

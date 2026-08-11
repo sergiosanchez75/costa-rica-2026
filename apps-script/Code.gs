@@ -17,26 +17,23 @@
  * 6. Copia la URL que termina en /exec y pégala en EXPENSES_API_URL,
  *    dentro de data.py.
  *
- * La hoja usa (y crea sola si hace falta) esta cabecera en la fila 1:
- *   ID | Fecha | Tipo de Gasto | Descripción | Lugar | Importe
+ * La hoja usa (y crea sola si hace falta) esta cabecera en la fila 1, en
+ * este orden de columnas exacto (A, B, C, D, E, F). El script identifica
+ * las columnas por posición, no por el texto de la cabecera, para evitar
+ * problemas si algún acento se pega distinto:
+ *   A: ID | B: Fecha | C: Tipo de Gasto | D: Descripción | E: Lugar | F: Importe
  */
 
+var COL = { ID: 0, FECHA: 1, TIPO: 2, DESCRIPCION: 3, LUGAR: 4, IMPORTE: 5 };
 var HEADERS = ['ID', 'Fecha', 'Tipo de Gasto', 'Descripción', 'Lugar', 'Importe'];
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheets()[0];
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
+  if (sheet.getLastRow() < 1) {
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
   }
   return sheet;
-}
-
-function headerIndex_(sheet) {
-  var headerRow = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  var idx = {};
-  headerRow.forEach(function (h, i) { idx[String(h).trim()] = i; });
-  return idx;
 }
 
 function formatDate_(value) {
@@ -48,22 +45,21 @@ function formatDate_(value) {
 
 function readAll_() {
   var sheet = getSheet_();
-  var idx = headerIndex_(sheet);
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
-  var values = sheet.getRange(2, 1, lastRow - 1, sheet.getLastColumn()).getValues();
+  var values = sheet.getRange(2, 1, lastRow - 1, HEADERS.length).getValues();
   var items = [];
   for (var r = 0; r < values.length; r++) {
     var row = values[r];
     if (row.every(function (c) { return c === '' || c === null; })) continue;
     items.push({
       rowNumber: r + 2,
-      id: String(row[idx['ID']] || ''),
-      fecha: formatDate_(row[idx['Fecha']]),
-      tipo: String(row[idx['Tipo de Gasto']] || ''),
-      descripcion: String(row[idx['Descripción']] || ''),
-      lugar: String(row[idx['Lugar']] || ''),
-      importe: Number(row[idx['Importe']] || 0),
+      id: String(row[COL.ID] || ''),
+      fecha: formatDate_(row[COL.FECHA]),
+      tipo: String(row[COL.TIPO] || ''),
+      descripcion: String(row[COL.DESCRIPCION] || ''),
+      lugar: String(row[COL.LUGAR] || ''),
+      importe: Number(row[COL.IMPORTE] || 0),
     });
   }
   return items;
@@ -82,7 +78,6 @@ function doPost(e) {
     var body = JSON.parse(e.postData.contents);
     var action = body.action;
     var sheet = getSheet_();
-    var idx = headerIndex_(sheet);
 
     if (action === 'add') {
       if (!body.fecha || !body.tipo || !body.importe) {
@@ -90,12 +85,12 @@ function doPost(e) {
       }
       var id = Utilities.getUuid();
       var row = [];
-      row[idx['ID']] = id;
-      row[idx['Fecha']] = body.fecha;
-      row[idx['Tipo de Gasto']] = body.tipo;
-      row[idx['Descripción']] = body.descripcion || '';
-      row[idx['Lugar']] = body.lugar || 'General';
-      row[idx['Importe']] = Number(body.importe);
+      row[COL.ID] = id;
+      row[COL.FECHA] = body.fecha;
+      row[COL.TIPO] = body.tipo;
+      row[COL.DESCRIPCION] = body.descripcion || '';
+      row[COL.LUGAR] = body.lugar || 'General';
+      row[COL.IMPORTE] = Number(body.importe);
       sheet.appendRow(row);
       return jsonOut_({ ok: true, id: id });
     }
@@ -112,12 +107,12 @@ function doPost(e) {
       if (!target) return jsonOut_({ ok: false, error: 'not_found' });
 
       var editRow = [];
-      editRow[idx['ID']] = body.id;
-      editRow[idx['Fecha']] = body.fecha;
-      editRow[idx['Tipo de Gasto']] = body.tipo;
-      editRow[idx['Descripción']] = body.descripcion || '';
-      editRow[idx['Lugar']] = body.lugar || 'General';
-      editRow[idx['Importe']] = Number(body.importe);
+      editRow[COL.ID] = body.id;
+      editRow[COL.FECHA] = body.fecha;
+      editRow[COL.TIPO] = body.tipo;
+      editRow[COL.DESCRIPCION] = body.descripcion || '';
+      editRow[COL.LUGAR] = body.lugar || 'General';
+      editRow[COL.IMPORTE] = Number(body.importe);
       sheet.getRange(target.rowNumber, 1, 1, HEADERS.length).setValues([editRow]);
       return jsonOut_({ ok: true });
     }
