@@ -29,6 +29,14 @@ ICON_PIN = '<path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circl
 ICON_LOCK = '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
 ICON_LEAF = '<path d="M4 20c4-10 8-14 16-16-2 8-6 12-16 16Z"/><path d="M4 20c2-4 4-6 7-8"/>'
 ICON_CALENDAR = '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+ICON_TICKET = '<path d="M3 9a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path d="M13 6v1.5M13 11v2M13 16.5V18"/>'
+
+# Colores del sistema que se van rotando para etiquetas de documentos.
+TAG_COLORS = ["hoja", "mango", "oceano", "guanacaste", "ciudad"]
+
+
+def tag_color(i):
+    return TAG_COLORS[i % len(TAG_COLORS)]
 
 ACTIVITY_ICONS = {
     "building": '<rect x="6" y="8" width="5" height="13"/><rect x="13" y="4" width="5" height="17"/>',
@@ -55,7 +63,7 @@ ACTIVITY_ICON_MAP = {
     "ballenas-uvita": "whale",
 }
 
-DOC_ICONS = {"plane": ICON_PLANE, "hotel": ICON_HOTEL, "shield": ICON_SHIELD, "transfer": ICON_TRANSFER}
+DOC_ICONS = {"plane": ICON_PLANE, "hotel": ICON_HOTEL, "shield": ICON_SHIELD, "transfer": ICON_TRANSFER, "ticket": ICON_TICKET}
 
 GRADIENTS = {
     "ciudad": "linear-gradient(135deg, var(--ciudad), #443a5e 120%)",
@@ -227,14 +235,14 @@ def link_tile(label, url, icon, primary=False):
     return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelo en data.py</span></span>' % label
 
 
-def doc_tiles(docs, icon, empty_label, primary_first=False):
-    """Una lista de documentos -> una tile por documento, o un hueco discontinuo si está vacía."""
+def doc_tiles(docs, icon, empty_label):
+    """Una lista de documentos -> una tile por documento (cada una con un color distinto
+    del sistema), o un hueco discontinuo si está vacía."""
     if not docs:
         return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelos en data.py</span></span>' % empty_label
     tiles = []
     for i, d in enumerate(docs):
-        cls = "link-tile primary" if (primary_first and i == 0) else "link-tile"
-        tiles.append('<a class="%s" href="%s" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24">%s</svg><span>%s</span></a>' % (cls, d["url"], icon, d["label"]))
+        tiles.append('<a class="link-tile c-%s" href="%s" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24">%s</svg><span>%s</span></a>' % (tag_color(i), d["url"], icon, d["label"]))
     return "".join(tiles)
 
 
@@ -243,8 +251,8 @@ def doc_item(item):
     docs = item.get("docs", [])
     if docs:
         links = "".join(
-            '<a class="doc-link" href="%s" target="_blank" rel="noopener">%s</a>' % (d["url"], d["label"])
-            for d in docs
+            '<a class="doc-link c-%s" href="%s" target="_blank" rel="noopener">%s</a>' % (tag_color(i), d["url"], d["label"])
+            for i, d in enumerate(docs)
         )
         return '''<div class="doc-item">
       <svg class="icon" viewBox="0 0 24 24">%s</svg>
@@ -471,7 +479,7 @@ def build_destinations():
 </div>''' % {
             "name": d["name"], "dest_hero": dest_hero, "acts": "".join(act_cards),
             "photos": link_tile("Ver fotos del destino", d["photos_url"], ICON_CAMERA, primary=True),
-            "docs": doc_tiles(d["docs"], ICON_DOC, "Documentos del destino", primary_first=True),
+            "docs": doc_tiles(d["docs"], ICON_DOC, "Documentos del destino"),
         }
 
         html = layout(
@@ -508,7 +516,7 @@ def build_activities():
             "did": d["id"], "dname": d["name"], "title": a["title"], "color": d["color"],
             "day": a["day_label"], "time": a["time"], "desc": a["description"],
             "photos": link_tile("Ver fotos de la actividad", a["photos_url"], ICON_CAMERA, primary=True),
-            "docs": doc_tiles(a["docs"], ICON_DOC, "Entradas, vouchers", primary_first=True),
+            "docs": doc_tiles(a["docs"], ICON_DOC, "Entradas, vouchers"),
         }
 
         html = layout(
@@ -521,26 +529,46 @@ def build_activities():
 
 # ======================================================= documentos.html ==
 
-def build_documentos():
-    cats_html = []
-    for cat in data.DOC_CATEGORIES:
-        items_html = "".join(doc_item(i) for i in cat["items"])
-        cats_html.append('''<div class="doc-cat">
+def doc_category_html(title, icon_key, color, items):
+    items_html = "".join(doc_item(i) for i in items)
+    return '''<div class="doc-cat">
       <div class="doc-cat-head"><svg class="icon" viewBox="0 0 24 24" style="color:var(--%(color)s)">%(icon)s</svg><b>%(title)s</b></div>
       <div class="doc-list">%(items)s</div>
-    </div>''' % {"color": cat["color"], "icon": DOC_ICONS[cat["icon"]], "title": cat["title"], "items": items_html})
+    </div>''' % {"color": color, "icon": DOC_ICONS[icon_key], "title": title, "items": items_html}
+
+
+def build_documentos():
+    # Hoteles: se toma directamente de DESTINATIONS, sin duplicar datos.
+    hotel_items = []
+    for d in data.DESTINATIONS:
+        hotel_names = ", ".join(dict.fromkeys(s["hotel"] for s in d["stays"]))
+        dates = " y ".join(s["dates"] for s in d["stays"])
+        hotel_items.append({"title": hotel_names, "subtitle": "%s · %s" % (d["name"], dates), "docs": d["docs"]})
+
+    # Excursiones: se toma directamente de ACTIVITIES, sin duplicar datos.
+    excursion_items = []
+    for a in data.ACTIVITIES:
+        d = dest_by_id(a["destination_id"])
+        excursion_items.append({"title": a["title"], "subtitle": "%s · %s" % (d["name"], a["day_label"]), "docs": a["docs"]})
+
+    cats_html = [
+        doc_category_html("Hoteles", "hotel", "hoja", hotel_items),
+        doc_category_html("Transportes", "transfer", "oceano", data.TRANSPORT_DOCS),
+        doc_category_html("Excursiones", "ticket", "guanacaste", excursion_items),
+        doc_category_html("Varios", "shield", "ciudad", data.MISC_DOCS),
+    ]
 
     body = '''<div class="crumb"><a href="index.html">Inicio</a> / Documentos</div>
 <div class="sec-head">
   <p class="sec-eyebrow">Todo en un sitio</p>
   <h2>Documentación del viaje</h2>
-  <p>Seguro, vuelos, hoteles y traslados. Los que aún no tienen enlace se muestran discontinuos — añade el enlace de Drive en <code>data.py</code>.</p>
+  <p>Hoteles y excursiones se rellenan desde las páginas de cada destino/actividad en <code>data.py</code>; transportes y varios se editan aquí abajo. Lo que aún no tiene enlace se muestra discontinuo.</p>
 </div>
 %(cats)s''' % {"cats": "".join(cats_html)}
 
     html = layout(
         "Documentos — %s" % data.TRIP_TITLE,
-        "Seguro, vuelos, hoteles y traslados del viaje a Costa Rica.",
+        "Hoteles, transportes, excursiones y otros documentos del viaje a Costa Rica.",
         depth=0, active="documentos", body=body,
     )
     write("documentos.html", html)

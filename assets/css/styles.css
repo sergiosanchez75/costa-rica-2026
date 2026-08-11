@@ -281,6 +281,22 @@ hr.div{border:0; border-top:1px solid var(--line); margin:0;}
 }
 .link-tile svg{width:16px;height:16px;}
 
+/* Etiquetas de documentos: cada una en un color distinto del sistema. */
+.link-tile.c-hoja,.link-tile.c-mango,.link-tile.c-oceano,.link-tile.c-guanacaste,.link-tile.c-ciudad,
+.doc-link.c-hoja,.doc-link.c-mango,.doc-link.c-oceano,.doc-link.c-guanacaste,.doc-link.c-ciudad{
+  font-weight:700; border-width:1.5px;
+}
+.link-tile.c-hoja{background:color-mix(in srgb, var(--hoja) 16%, var(--paper)); border-color:var(--hoja); color:var(--hoja-ink);}
+.link-tile.c-mango{background:color-mix(in srgb, var(--mango) 16%, var(--paper)); border-color:var(--mango); color:var(--mango);}
+.link-tile.c-oceano{background:color-mix(in srgb, var(--oceano) 16%, var(--paper)); border-color:var(--oceano); color:var(--oceano);}
+.link-tile.c-guanacaste{background:color-mix(in srgb, var(--guanacaste) 16%, var(--paper)); border-color:var(--guanacaste); color:var(--guanacaste);}
+.link-tile.c-ciudad{background:color-mix(in srgb, var(--ciudad) 18%, var(--paper)); border-color:var(--ciudad); color:var(--ciudad);}
+.link-tile.c-hoja:hover{background:color-mix(in srgb, var(--hoja) 28%, var(--paper));}
+.link-tile.c-mango:hover{background:color-mix(in srgb, var(--mango) 28%, var(--paper));}
+.link-tile.c-oceano:hover{background:color-mix(in srgb, var(--oceano) 28%, var(--paper));}
+.link-tile.c-guanacaste:hover{background:color-mix(in srgb, var(--guanacaste) 28%, var(--paper));}
+.link-tile.c-ciudad:hover{background:color-mix(in srgb, var(--ciudad) 30%, var(--paper));}
+
 /* ---------- DOCS PAGE ---------- */
 .doc-cat{margin-bottom:24px;}
 .doc-cat-head{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
@@ -305,6 +321,16 @@ hr.div{border:0; border-top:1px solid var(--line); margin:0;}
   color:var(--hoja-ink); background:var(--paper); font-weight:700;
 }
 .doc-link:hover{background:var(--niebla-2);}
+.doc-link.c-hoja{background:color-mix(in srgb, var(--hoja) 16%, var(--paper)); border-color:var(--hoja); color:var(--hoja-ink);}
+.doc-link.c-mango{background:color-mix(in srgb, var(--mango) 16%, var(--paper)); border-color:var(--mango); color:var(--mango);}
+.doc-link.c-oceano{background:color-mix(in srgb, var(--oceano) 16%, var(--paper)); border-color:var(--oceano); color:var(--oceano);}
+.doc-link.c-guanacaste{background:color-mix(in srgb, var(--guanacaste) 16%, var(--paper)); border-color:var(--guanacaste); color:var(--guanacaste);}
+.doc-link.c-ciudad{background:color-mix(in srgb, var(--ciudad) 18%, var(--paper)); border-color:var(--ciudad); color:var(--ciudad);}
+.doc-link.c-hoja:hover{background:color-mix(in srgb, var(--hoja) 28%, var(--paper));}
+.doc-link.c-mango:hover{background:color-mix(in srgb, var(--mango) 28%, var(--paper));}
+.doc-link.c-oceano:hover{background:color-mix(in srgb, var(--oceano) 28%, var(--paper));}
+.doc-link.c-guanacaste:hover{background:color-mix(in srgb, var(--guanacaste) 28%, var(--paper));}
+.doc-link.c-ciudad:hover{background:color-mix(in srgb, var(--ciudad) 30%, var(--paper));}
 
 /* ---------- GASTOS / LOCK ---------- */
 .lock-wrap{

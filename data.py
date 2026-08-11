@@ -19,7 +19,7 @@ COMO RELLENAR LOS ENLACES DE FOTOS
 
 COMO ANADIR DOCUMENTOS (vouchers, entradas, confirmaciones...)
 ------------------------------------------------
-Cada destino, cada actividad y cada item de DOC_CATEGORIES tiene una lista
+Cada destino (DESTINATIONS) y cada actividad (ACTIVITIES) tiene una lista
 "docs". Puedes anadir tantos documentos como quieras, cada uno con una
 etiqueta corta y su enlace (por ejemplo, subido a Google Drive y compartido):
 
@@ -30,6 +30,12 @@ etiqueta corta y su enlace (por ejemplo, subido a Google Drive y compartido):
 
 Si la lista esta vacia ([]), la web muestra un hueco discontinuo invitando a
 anadir documentos.
+
+La pagina de Documentos junta todo esto en 4 categorias:
+  - Hoteles     -> se genera solo, a partir de "docs" en DESTINATIONS.
+  - Excursiones -> se genera solo, a partir de "docs" en ACTIVITIES.
+  - Transportes -> se edita a mano en TRANSPORT_DOCS (mas abajo).
+  - Varios      -> se edita a mano en MISC_DOCS (mas abajo).
 """
 
 TRIP_TITLE = "Costa Rica 2026"
@@ -247,49 +253,26 @@ DAYS = [
      "headline": "Vuelo", "detail": "San José → Panamá → Madrid (llegada 31/08)"},
 ]
 
-DOC_CATEGORIES = [
-    {
-        "title": "Vuelos",
-        "icon": "plane",
-        "color": "ciudad",
-        "items": [
-            {"title": "Madrid → Panamá → San José", "subtitle": "18 agosto · sale 15:05, llega 21:45", "docs": []},
-            {"title": "San José → Panamá → Madrid", "subtitle": "30 agosto · sale 14:48, llega 31/08 13:15", "docs": []},
-        ],
-    },
-    {
-        "title": "Hoteles",
-        "icon": "hotel",
-        "color": "hoja",
-        "items": [
-            {"title": "Holiday Inn Express San José", "subtitle": "18-20 ago y 29-30 ago", "docs": [
-                {"label": "Confirmación recepción hotel", "url": "https://drive.google.com/file/d/1x2NgRnMRe9wQvxcNW7kp_LI7oLxRFFjX/view?usp=drive_link"},
-                {"label": "Hotel 18-20 agosto", "url": "https://drive.google.com/file/d/1YFIrOZ9XNwknPJVBOn84haf7SLlnROF_/view?usp=drive_link"},
-                {"label": "Hotel 29-30 agosto", "url": "https://drive.google.com/file/d/12w0EEeCaBu1aXeFs7zzg1QJHnbH1zDqn/view?usp=drive_link"},
-            ]},
-            {"title": "Laguna Lodge — Tortuguero", "subtitle": "20-22 ago", "docs": []},
-            {"title": "Hotel Monte Real — La Fortuna", "subtitle": "22-25 ago", "docs": []},
-            {"title": "Iglú Beach Lodge — Manuel Antonio", "subtitle": "25-29 ago", "docs": []},
-        ],
-    },
-    {
-        "title": "Seguro de viaje",
-        "icon": "shield",
-        "color": "oceano",
-        "items": [
-            {"title": "Póliza y condiciones", "subtitle": "Cobertura del 18 al 31 de agosto", "docs": []},
-        ],
-    },
-    {
-        "title": "Traslados",
-        "icon": "transfer",
-        "color": "guanacaste",
-        "items": [
-            {"title": "Tortuguero → La Fortuna", "subtitle": "22 agosto · barca y coche", "docs": []},
-            {"title": "La Fortuna → Manuel Antonio", "subtitle": "25 agosto", "docs": []},
-            {"title": "Manuel Antonio → San José", "subtitle": "29 agosto", "docs": []},
-        ],
-    },
+# La página de Documentos tiene 4 categorías: Hoteles, Transportes, Excursiones y Varios.
+#
+# "Hoteles" se genera solo a partir de DESTINATIONS (arriba) y "Excursiones" se genera
+# solo a partir de ACTIVITIES: no hace falta repetir esos documentos aquí, con ponerlos
+# en el "docs" del destino o de la actividad correspondiente ya aparecen en las dos
+# páginas a la vez.
+#
+# Aquí solo se editan los documentos que no pertenecen a un destino o actividad
+# concretos: vuelos y traslados (TRANSPORT_DOCS) y todo lo demás (MISC_DOCS).
+
+TRANSPORT_DOCS = [
+    {"title": "Madrid → Panamá → San José", "subtitle": "Vuelo · 18 agosto · sale 15:05, llega 21:45", "docs": []},
+    {"title": "San José → Panamá → Madrid", "subtitle": "Vuelo · 30 agosto · sale 14:48, llega 31/08 13:15", "docs": []},
+    {"title": "Tortuguero → La Fortuna", "subtitle": "Traslado · 22 agosto · barca y coche", "docs": []},
+    {"title": "La Fortuna → Manuel Antonio", "subtitle": "Traslado · 25 agosto", "docs": []},
+    {"title": "Manuel Antonio → San José", "subtitle": "Traslado · 29 agosto", "docs": []},
+]
+
+MISC_DOCS = [
+    {"title": "Póliza y condiciones del seguro", "subtitle": "Cobertura del 18 al 31 de agosto", "docs": []},
 ]
 
 # Gastos reales (EUR), tal y como estan en la hoja de planificacion.
