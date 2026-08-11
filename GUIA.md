@@ -14,26 +14,48 @@
 
 ## Añadir fotos y documentos (vouchers, entradas)
 
-Cada actividad y cada destino tiene dos huecos en `data.py`: `photos_url` y `docs_url`. Mientras estén en `None`, la web muestra un botón discontinuo de "añadir". Para rellenarlos:
+Cada actividad y cada destino tiene `photos_url` (un álbum) y `docs` (una lista de documentos) en `data.py`. Mientras estén vacíos, la web muestra un hueco discontinuo de "añadir". Para rellenarlos:
 
 1. **Fotos** — crea un álbum de Google Photos por destino (y, si quieres, uno por actividad), compártelo, y copia el enlace del álbum.
-2. **Documentos** — sube el voucher/entrada a una carpeta de Google Drive, compártela, y copia el enlace.
+2. **Documentos** — sube el voucher/entrada a Google Drive, compártelo, y copia el enlace.
 3. Pega el enlace en `data.py`, por ejemplo:
 
    ```python
    "photos_url": "https://photos.app.goo.gl/xxxxxxx",
-   "docs_url": "https://drive.google.com/drive/folders/xxxxxxx",
+   "docs": [
+       {"label": "Voucher hotel", "url": "https://drive.google.com/file/d/xxxxxxx/view"},
+   ],
    ```
 
 4. Guarda y ejecuta `python generate.py` otra vez.
 
-Puedes ir haciendo esto poco a poco durante el viaje, incluso desde el móvil editando `data.py` con cualquier editor de texto y, si tienes Python en el móvil, regenerando ahí — o más cómodamente desde el portátil por la noche en el hotel.
+Puedes ir haciendo esto poco a poco durante el viaje, incluso desde el móvil editando `data.py` con cualquier editor de texto y, si tienes Python en el móvil, regenerando ahí — o más cómodamente desde el portátil por la noche en el hotel. También vale con pasarme el enlace y la etiqueta por chat, como hemos hecho hasta ahora.
 
-Los documentos generales del viaje (vuelos, hoteles, seguro, traslados) se editan igual, en la lista `DOC_CATEGORIES`.
+Los documentos que no pertenecen a un destino o actividad concreta (vuelos, traslados, seguro...) se editan en `TRANSPORT_DOCS` y `MISC_DOCS`.
 
 ## Cambiar la contraseña de gastos
 
 Edita `GASTOS_PASSWORD` en `data.py` y regenera. Recuerda: es solo una "cortina" en el propio navegador (evita que alguien entre sin querer), no seguridad real — cualquiera que mire el código fuente de `gastos.html` puede ver el hash. Suficiente para uso familiar, no para datos sensibles de verdad.
+
+## Gastos del día a día (comidas, snacks, ubers...)
+
+La página de Gastos lee una Google Sheet en directo: tarjetas por categoría, un quesito y la lista completa se calculan solos a partir de lo que haya en la hoja — no hace falta tocar código para añadir un gasto nuevo, solo añadir una fila.
+
+1. Crea una Google Sheet con estas columnas exactas en la primera fila:
+
+   ```
+   Fecha | Tipo de Gasto | Descripción | Lugar | Importe
+   ```
+
+   - `Tipo de Gasto` tiene que ser uno de: Avión, Hoteles, Transportes, Actividades, Comidas, Snacks, Compras Varias, Seguro Viaje, eSim.
+   - `Lugar` tiene que ser uno de: General, San Jose, Tortuguero, La Fortuna, Manuel Antonio.
+   - `Importe` en número (con coma o con punto, ambos funcionan).
+
+2. **Archivo → Compartir → Publicar en la Web**. Elige la hoja, formato **Valores separados por comas (.csv)**, pulsa **Publicar** y copia el enlace que te da.
+3. Pégalo en `EXPENSES_SHEET_CSV_URL` (arriba del todo de la sección de gastos en `data.py`) y ejecuta `python generate.py` una vez.
+4. A partir de ahí, para añadir un gasto solo tienes que abrir la Sheet (desde el móvil, con la app de Google Sheets va perfecto) y añadir una fila — la próxima vez que abras la página de Gastos y metas la contraseña, aparece solo. No hace falta volver a ejecutar `generate.py` para cada gasto nuevo.
+
+Nota de privacidad: "Publicar en la Web" hace que cualquiera con ese enlace concreto pueda leer la hoja (igual que los documentos de Drive) — no aparece listada en ningún sitio ni es buscable, pero no está protegida por la contraseña de Gastos en sí misma. Si algún día quieres cambiar los tipos de gasto o los lugares, edita `EXPENSE_CATEGORIES` / `EXPENSE_PLACES` en `data.py` (y usa esos mismos nombres en la columna correspondiente de la Sheet).
 
 ## Publicar en GitHub Pages (para abrir la web desde el móvil)
 

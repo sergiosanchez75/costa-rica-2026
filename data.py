@@ -303,17 +303,51 @@ MISC_DOCS = [
     },
 ]
 
-# Gastos reales (EUR), tal y como estan en la hoja de planificacion.
-EXPENSES = {
-    "categories": [
-        {"label": "Avión", "amount": 4211.16, "color": "ciudad"},
-        {"label": "Alojamiento", "amount": 2461.07, "color": "hoja"},
-        {"label": "Comidas", "amount": 1655.00, "color": "mango"},
-        {"label": "Actividades", "amount": 1128.81, "color": "guanacaste"},
-        {"label": "Traslados", "amount": 900.00, "color": "oceano"},
-        {"label": "Seguro de viaje", "amount": 285.00, "color": "tinta"},
-    ],
-    "total": 10641.04,
-    "paid": 4352.16,
-    "pending": 2285.33,
-}
+# ============================================================================
+# GASTOS DEL VIAJE — registrados en una Google Sheet compartida (no aqui).
+# ============================================================================
+#
+# COMO CONECTARLO
+# ------------------------------------------------
+# 1. Crea una Google Sheet con estas 5 columnas exactas en la primera fila
+#    (el orden no importa, pero los nombres si):
+#
+#       Fecha | Tipo de Gasto | Descripción | Lugar | Importe
+#
+#    - "Tipo de Gasto" debe ser uno de los valores de EXPENSE_CATEGORIES (abajo).
+#    - "Lugar" debe ser uno de los valores de EXPENSE_PLACES (abajo).
+#    - "Importe" en numeros, sin simbolo de moneda (ej. 12.50 o 12,50).
+#
+# 2. En Sheets: Archivo -> Compartir -> Publicar en la Web. Elige la hoja,
+#    formato "Valores separados por comas (.csv)", y pulsa Publicar.
+# 3. Copia el enlace que te da (algo como
+#    ".../pub?gid=0&single=true&output=csv") y pegalo en EXPENSES_SHEET_CSV_URL.
+# 4. Ejecuta "python generate.py" otra vez. La web ya se encarga de leer la
+#    hoja, sumar por categoria, dibujar el quesito y la lista - no hace falta
+#    tocar mas codigo cuando anadas filas nuevas a la hoja, solo recargar la
+#    pagina (con la contraseña puesta, claro).
+#
+# Mientras EXPENSES_SHEET_CSV_URL este en None, la pagina de Gastos muestra un
+# hueco explicando como conectarlo.
+
+EXPENSES_SHEET_CSV_URL = None
+
+EXPENSE_CATEGORIES = [
+    {"label": "Avión", "color": "#6e5d8c"},
+    {"label": "Hoteles", "color": "#2f9e6e"},
+    {"label": "Transportes", "color": "#1c8ca8"},
+    {"label": "Actividades", "color": "#e0563f"},
+    {"label": "Comidas", "color": "#ef8a17"},
+    {"label": "Snacks", "color": "#f0c419"},
+    {"label": "Compras Varias", "color": "#d6538c"},
+    {"label": "Seguro Viaje", "color": "#445c54"},
+    {"label": "eSim", "color": "#4361ee"},
+]
+
+EXPENSE_PLACES = [
+    {"label": "General", "color": "#8a8f86"},
+    {"label": "San Jose", "color": "#6e5d8c"},
+    {"label": "Tortuguero", "color": "#1c8ca8"},
+    {"label": "La Fortuna", "color": "#e0563f"},
+    {"label": "Manuel Antonio", "color": "#ef8a17"},
+]

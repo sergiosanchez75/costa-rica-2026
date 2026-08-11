@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gastos — Costa Rica 2026</title>
-<meta name="description" content="Desglose de gastos del viaje (privado).">
+<meta name="description" content="Gastos del viaje (privado).">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%A6%9C%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -29,7 +29,7 @@
 <div id="gastos-lock" class="lock-wrap">
   <div class="lock-badge"><svg class="icon" viewBox="0 0 24 24" style="stroke:var(--niebla)"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
   <h2 style="margin:0;">Contenido privado</h2>
-  <p class="hint">Introduce la contraseña para ver el desglose de gastos.</p>
+  <p class="hint">Introduce la contraseña para ver los gastos.</p>
   <form id="pass-form" class="pass-form">
     <input id="gastos-pass" type="password" placeholder="Contraseña" autocomplete="off">
     <button type="submit">Entrar</button>
@@ -38,36 +38,14 @@
 </div>
 
 <div id="gastos-content">
-  <div class="exp-summary">
-    <div class="exp-stat"><div class="l">Total del viaje</div><div class="v">10.641.04 €</div></div>
-    <div class="exp-stat"><div class="l">Ya pagado</div><div class="v" style="color:var(--hoja-ink)">4.352.16 €</div></div>
-    <div class="exp-stat"><div class="l">Pendiente de pago</div><div class="v" style="color:var(--guanacaste)">2.285.33 €</div></div>
-  </div>
-  <div class="exp-bars"><div class="exp-bar-row">
-      <span class="lbl">Avión</span>
-      <div class="track"><div class="fill" style="width:100%; background:var(--ciudad)"></div></div>
-      <span class="amt">4.211.16 €</span>
-    </div><div class="exp-bar-row">
-      <span class="lbl">Alojamiento</span>
-      <div class="track"><div class="fill" style="width:58%; background:var(--hoja)"></div></div>
-      <span class="amt">2.461.07 €</span>
-    </div><div class="exp-bar-row">
-      <span class="lbl">Comidas</span>
-      <div class="track"><div class="fill" style="width:39%; background:var(--mango)"></div></div>
-      <span class="amt">1.655.00 €</span>
-    </div><div class="exp-bar-row">
-      <span class="lbl">Actividades</span>
-      <div class="track"><div class="fill" style="width:27%; background:var(--guanacaste)"></div></div>
-      <span class="amt">1.128.81 €</span>
-    </div><div class="exp-bar-row">
-      <span class="lbl">Traslados</span>
-      <div class="track"><div class="fill" style="width:21%; background:var(--oceano)"></div></div>
-      <span class="amt">900.00 €</span>
-    </div><div class="exp-bar-row">
-      <span class="lbl">Seguro de viaje</span>
-      <div class="track"><div class="fill" style="width:7%; background:var(--tinta)"></div></div>
-      <span class="amt">285.00 €</span>
-    </div></div>
+  <div class="callout">
+      <h4>Conecta tu hoja de gastos</h4>
+      <ul>
+        <li>Crea una Google Sheet con las columnas <b>Fecha, Tipo de Gasto, Descripción, Lugar, Importe</b> (los valores de Tipo de Gasto y Lugar deben coincidir con EXPENSE_CATEGORIES / EXPENSE_PLACES en data.py).</li>
+        <li>Archivo → Compartir → Publicar en la Web → elige la hoja → formato CSV → Publicar.</li>
+        <li>Pega ese enlace en <code>EXPENSES_SHEET_CSV_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
+      </ul>
+    </div>
   <div style="margin-top:28px;">
     <div class="callout">
       <h4>Recuerda</h4>
@@ -78,11 +56,21 @@
     </div>
   </div>
 </div>
+
+<div id="exp-popup" class="exp-popup-overlay" onclick="if(event.target===this) closeExpensePopup()">
+  <div class="exp-popup-box">
+    <div class="exp-popup-head">
+      <h3 id="exp-popup-title"></h3>
+      <button type="button" class="exp-popup-close" onclick="closeExpensePopup()" aria-label="Cerrar">&times;</button>
+    </div>
+    <div id="exp-popup-list" class="exp-list"></div>
+  </div>
+</div>
 </main>
 <footer>
   <div class="wrap"><p>Cuaderno de viaje — Costa Rica 2026 · 18 - 30 agosto 2026</p></div>
 </footer>
 <script src="assets/js/main.js"></script>
-<script>initGastos('7c68568bf76176139cf96c2118d0dd834628fb7406b9dc643e9163e7de3aa72f');</script>
+<script>initGastos('7c68568bf76176139cf96c2118d0dd834628fb7406b9dc643e9163e7de3aa72f', {"csvUrl": null, "categories": [{"label": "Avión", "color": "#6e5d8c"}, {"label": "Hoteles", "color": "#2f9e6e"}, {"label": "Transportes", "color": "#1c8ca8"}, {"label": "Actividades", "color": "#e0563f"}, {"label": "Comidas", "color": "#ef8a17"}, {"label": "Snacks", "color": "#f0c419"}, {"label": "Compras Varias", "color": "#d6538c"}, {"label": "Seguro Viaje", "color": "#445c54"}, {"label": "eSim", "color": "#4361ee"}], "places": [{"label": "General", "color": "#8a8f86"}, {"label": "San Jose", "color": "#6e5d8c"}, {"label": "Tortuguero", "color": "#1c8ca8"}, {"label": "La Fortuna", "color": "#e0563f"}, {"label": "Manuel Antonio", "color": "#ef8a17"}]});</script>
 </body>
 </html>

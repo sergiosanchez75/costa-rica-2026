@@ -10,6 +10,7 @@ documentos, cambios de texto, gastos, etc.).
 """
 import hashlib
 import io
+import json
 import os
 import urllib.parse
 
@@ -598,28 +599,30 @@ def build_documentos():
 # =========================================================== gastos.html ==
 
 def build_gastos():
-    exp = data.EXPENSES
-    max_amt = max(c["amount"] for c in exp["categories"])
-    bars = []
-    for c in exp["categories"]:
-        pct = round(100 * c["amount"] / max_amt)
-        bars.append('''<div class="exp-bar-row">
-      <span class="lbl">%(label)s</span>
-      <div class="track"><div class="fill" style="width:%(pct)s%%; background:var(--%(color)s)"></div></div>
-      <span class="amt">%(amt)s €</span>
-    </div>''' % {"label": c["label"], "pct": pct, "color": c["color"], "amt": "{:,.2f}".format(c["amount"]).replace(",", ".")})
-
-    stats = '''<div class="exp-summary">
-    <div class="exp-stat"><div class="l">Total del viaje</div><div class="v">%(total)s €</div></div>
-    <div class="exp-stat"><div class="l">Ya pagado</div><div class="v" style="color:var(--hoja-ink)">%(paid)s €</div></div>
-    <div class="exp-stat"><div class="l">Pendiente de pago</div><div class="v" style="color:var(--guanacaste)">%(pending)s €</div></div>
-  </div>''' % {
-        "total": "{:,.2f}".format(exp["total"]).replace(",", "."),
-        "paid": "{:,.2f}".format(exp["paid"]).replace(",", "."),
-        "pending": "{:,.2f}".format(exp["pending"]).replace(",", "."),
-    }
-
     pass_hash = hashlib.sha256(data.GASTOS_PASSWORD.encode("utf-8")).hexdigest()
+    csv_url = data.EXPENSES_SHEET_CSV_URL
+
+    if csv_url:
+        content_html = '''<div id="expense-cards" class="exp-cards"></div>
+  <div class="grid-2" style="margin-top:28px;">
+    <div>
+      <div class="subhead-row"><h4>Gasto por categoría</h4></div>
+      <div id="expense-chart" class="exp-chart-wrap"></div>
+    </div>
+    <div>
+      <div class="subhead-row"><h4>Todos los gastos</h4></div>
+      <div id="expense-list" class="exp-list"></div>
+    </div>
+  </div>'''
+    else:
+        content_html = '''<div class="callout">
+      <h4>Conecta tu hoja de gastos</h4>
+      <ul>
+        <li>Crea una Google Sheet con las columnas <b>Fecha, Tipo de Gasto, Descripción, Lugar, Importe</b> (los valores de Tipo de Gasto y Lugar deben coincidir con EXPENSE_CATEGORIES / EXPENSE_PLACES en data.py).</li>
+        <li>Archivo → Compartir → Publicar en la Web → elige la hoja → formato CSV → Publicar.</li>
+        <li>Pega ese enlace en <code>EXPENSES_SHEET_CSV_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
+      </ul>
+    </div>'''
 
     body = '''<div class="crumb"><a href="index.html">Inicio</a> / Gastos</div>
 <div class="sec-head">
@@ -630,7 +633,7 @@ def build_gastos():
 <div id="gastos-lock" class="lock-wrap">
   <div class="lock-badge"><svg class="icon" viewBox="0 0 24 24" style="stroke:var(--niebla)">%(lock_icon)s</svg></div>
   <h2 style="margin:0;">Contenido privado</h2>
-  <p class="hint">Introduce la contraseña para ver el desglose de gastos.</p>
+  <p class="hint">Introduce la contraseña para ver los gastos.</p>
   <form id="pass-form" class="pass-form">
     <input id="gastos-pass" type="password" placeholder="Contraseña" autocomplete="off">
     <button type="submit">Entrar</button>
@@ -639,8 +642,7 @@ def build_gastos():
 </div>
 
 <div id="gastos-content">
-  %(stats)s
-  <div class="exp-bars">%(bars)s</div>
+  %(content)s
   <div style="margin-top:28px;">
     <div class="callout">
       <h4>Recuerda</h4>
@@ -650,15 +652,29 @@ def build_gastos():
       </ul>
     </div>
   </div>
-</div>''' % {
-        "lock_icon": ICON_LOCK, "stats": stats, "bars": "".join(bars),
+</div>
+
+<div id="exp-popup" class="exp-popup-overlay" onclick="if(event.target===this) closeExpensePopup()">
+  <div class="exp-popup-box">
+    <div class="exp-popup-head">
+      <h3 id="exp-popup-title"></h3>
+      <button type="button" class="exp-popup-close" onclick="closeExpensePopup()" aria-label="Cerrar">&times;</button>
+    </div>
+    <div id="exp-popup-list" class="exp-list"></div>
+  </div>
+</div>''' % {"lock_icon": ICON_LOCK, "content": content_html}
+
+    expense_config = {
+        "csvUrl": csv_url,
+        "categories": [{"label": c["label"], "color": c["color"]} for c in data.EXPENSE_CATEGORIES],
+        "places": [{"label": p["label"], "color": p["color"]} for p in data.EXPENSE_PLACES],
     }
 
     html = layout(
         "Gastos — %s" % data.TRIP_TITLE,
-        "Desglose de gastos del viaje (privado).",
+        "Gastos del viaje (privado).",
         depth=0, active="gastos", body=body,
-        extra_script="<script>initGastos(%s);</script>" % repr(pass_hash),
+        extra_script="<script>initGastos(%s, %s);</script>" % (repr(pass_hash), json.dumps(expense_config, ensure_ascii=False)),
     )
     write("gastos.html", html)
 
