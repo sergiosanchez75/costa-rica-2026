@@ -76,7 +76,9 @@ DESTINATIONS = [
         ],
         "intro": "Un pueblo al que solo se llega en barca, rodeado de canales. Monos, caimanes y, si hay suerte, tortugas desovando de noche en la playa.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Voucher hotel Laguna Lodge", "url": "https://drive.google.com/file/d/1h_OaFFEqFQylDMm_TmAvr6FaqhAOGaFX/view?usp=drive_link"},
+        ],
     },
     {
         "id": "la-fortuna",
@@ -89,7 +91,9 @@ DESTINATIONS = [
         ],
         "intro": "Tres días a los pies del volcán Arenal: cascada, puentes colgantes sobre el bosque nuboso y aguas termales para descansar.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Voucher hotel Monte Real", "url": "https://drive.google.com/file/d/1ZncVSqUYh9DVN9LPHGudUqfsc8jZ0vaG/view?usp=drive_link"},
+        ],
     },
     {
         "id": "manuel-antonio",
@@ -102,7 +106,9 @@ DESTINATIONS = [
         ],
         "intro": "Selva y playa a la vez: el parque nacional con sus monos y perezosos, atardeceres en Espadilla y una excursión a Uvita a ver ballenas.",
         "photos_url": None,
-        "docs": [],
+        "docs": [
+            {"label": "Voucher hotel Iglú Beach Lodge", "url": "https://drive.google.com/file/d/1wwMQCsitWTzIsVGdUrDtg0pHi0sF4_dZ/view?usp=drive_link"},
+        ],
     },
 ]
 
