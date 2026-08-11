@@ -249,6 +249,27 @@ def doc_tiles(docs, icon, empty_label):
 def doc_item(item):
     icon = ICON_DOC
     docs = item.get("docs", [])
+    info = item.get("info", [])
+
+    if info:
+        info_rows = "".join(
+            '<div class="info-row"><span class="k">%s</span>%s</div>' % (
+                r["label"],
+                '<a class="v tel" href="tel:%s">%s</a>' % (r["value"].replace(" ", ""), r["value"]) if r.get("tel")
+                else '<span class="v">%s</span>' % r["value"],
+            )
+            for r in info
+        )
+        links = "".join(
+            '<a class="doc-link c-%s" href="%s" target="_blank" rel="noopener">%s</a>' % (tag_color(i), d["url"], d["label"])
+            for i, d in enumerate(docs)
+        ) if docs else '<span class="doc-link empty">Añadir documentos</span>'
+        return '''<div class="doc-item doc-item--rich">
+      <div class="doc-item-head"><svg class="icon" viewBox="0 0 24 24">%s</svg><div class="n"><b>%s</b><span>%s</span></div></div>
+      <div class="doc-info">%s</div>
+      <div class="doc-links">%s</div>
+    </div>''' % (icon, item["title"], item["subtitle"], info_rows, links)
+
     if docs:
         links = "".join(
             '<a class="doc-link c-%s" href="%s" target="_blank" rel="noopener">%s</a>' % (tag_color(i), d["url"], d["label"])

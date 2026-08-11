@@ -332,6 +332,17 @@ hr.div{border:0; border-top:1px solid var(--line); margin:0;}
 .doc-link.c-guanacaste:hover{background:color-mix(in srgb, var(--guanacaste) 28%, var(--paper));}
 .doc-link.c-ciudad:hover{background:color-mix(in srgb, var(--ciudad) 30%, var(--paper));}
 
+/* Item de documentación con datos sueltos (p.ej. seguro: nº de póliza, teléfono) */
+.doc-item--rich{display:flex; flex-direction:column; align-items:stretch; gap:12px; padding:14px 16px;}
+.doc-item-head{display:flex; align-items:center; gap:10px;}
+.doc-info{display:flex; flex-direction:column; gap:6px; padding:10px 12px; border-radius:8px; background:var(--niebla-2);}
+.info-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; font-size:13px;}
+.info-row .k{font-family:var(--font-ui); font-size:11px; letter-spacing:.04em; text-transform:uppercase; opacity:.6;}
+.info-row .v{font-weight:700; font-variant-numeric:tabular-nums;}
+.info-row a.v.tel{color:var(--hoja-ink); text-decoration:none;}
+.info-row a.v.tel:hover{text-decoration:underline;}
+.doc-item--rich .doc-links{max-width:none;}
+
 /* ---------- GASTOS / LOCK ---------- */
 .lock-wrap{
   min-height:320px; display:flex; flex-direction:column; align-items:center; justify-content:center;

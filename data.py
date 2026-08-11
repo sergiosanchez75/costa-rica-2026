@@ -286,7 +286,21 @@ TRANSPORT_DOCS = [
 ]
 
 MISC_DOCS = [
-    {"title": "Póliza y condiciones del seguro", "subtitle": "Cobertura del 18 al 31 de agosto", "docs": []},
+    {
+        "title": "Seguro de viaje",
+        "subtitle": "Cobertura del 18 al 31 de agosto",
+        # "info" son datos sueltos (no documentos) que se muestran como texto:
+        # cada uno con su etiqueta y valor. Si pones "tel": True, el valor se
+        # convierte en un enlace de llamada (útil para el teléfono de asistencia).
+        "info": [
+            {"label": "Número de póliza", "value": "1888888"},
+            {"label": "Asistencia en viaje 24h", "value": "+34 913536323", "tel": True},
+        ],
+        "docs": [
+            {"label": "Condiciones generales", "url": "https://drive.google.com/file/d/1VL-AClpr-hZuYpLEtZ8wsWTtfLyWxBRj/view?usp=drive_link"},
+            {"label": "Condiciones particulares", "url": "https://drive.google.com/file/d/1_u7txGWvhJ1_IFx2k6F2hoP3Jqm9Fa8w/view?usp=drive_link"},
+        ],
+    },
 ]
 
 # Gastos reales (EUR), tal y como estan en la hoja de planificacion.
