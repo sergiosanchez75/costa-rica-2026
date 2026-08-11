@@ -44,7 +44,7 @@ TRIP_DATES = "18 - 30 agosto 2026"
 
 # Contrasena de la seccion de gastos (solo una cortina, no seguridad real:
 # cualquiera que mire el codigo fuente puede verla). Cambiala aqui.
-GASTOS_PASSWORD = "puravida2026"
+GASTOS_PASSWORD = "0340"
 
 DESTINATIONS = [
     {
