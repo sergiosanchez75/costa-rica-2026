@@ -296,7 +296,7 @@ def build_index():
   <div class="wrap">
     <p class="hero-eyebrow">Cuaderno de viaje</p>
     <h1>%(title)s</h1>
-    <p class="lead">Un sitio para revivir el viaje día a día: calendario, destinos, actividades con fotos y documentos, y una sección de gastos privada.</p>
+    <p class="lead">Un sitio para revivir el viaje día a día: calendario, destinos, actividades con fotos y documentos.</p>
     <div class="sticker-badge-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">%(leaf)s</svg>
       <span class="sticker-badge">&iexcl;Pura Vida!</span>
