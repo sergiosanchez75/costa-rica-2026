@@ -9,14 +9,27 @@ o ajustar los gastos. Despues de editar, vuelve a ejecutar:
 
 para regenerar el sitio (index.html, destinos/, actividades/, documentos.html, gastos.html).
 
-COMO RELLENAR LOS ENLACES DE FOTOS Y DOCUMENTOS
+COMO RELLENAR LOS ENLACES DE FOTOS
 ------------------------------------------------
-1. Crea un album de Google Photos compartido (o una carpeta de Google Drive) por
-   destino y, si quieres, uno por actividad.
-2. En la app de Google Photos / Drive, comparte el album/carpeta y copia el enlace.
-3. Pega ese enlace como texto entre comillas en "photos_url" o "docs_url" mas abajo.
-4. Si lo dejas en None, la web muestra un hueco con borde discontinuo invitando a
-   anadirlo despues (no rompe nada).
+1. Crea un album de Google Photos compartido por destino (y, si quieres, uno por
+   actividad).
+2. Comparte el album y copia el enlace.
+3. Pega ese enlace en "photos_url". Si lo dejas en None, la web muestra un hueco
+   con borde discontinuo invitando a anadirlo despues.
+
+COMO ANADIR DOCUMENTOS (vouchers, entradas, confirmaciones...)
+------------------------------------------------
+Cada destino, cada actividad y cada item de DOC_CATEGORIES tiene una lista
+"docs". Puedes anadir tantos documentos como quieras, cada uno con una
+etiqueta corta y su enlace (por ejemplo, subido a Google Drive y compartido):
+
+    "docs": [
+        {"label": "Confirmación de reserva", "url": "https://drive.google.com/..."},
+        {"label": "Factura", "url": "https://drive.google.com/..."},
+    ],
+
+Si la lista esta vacia ([]), la web muestra un hueco discontinuo invitando a
+anadir documentos.
 """
 
 TRIP_TITLE = "Costa Rica 2026"
@@ -40,7 +53,11 @@ DESTINATIONS = [
         ],
         "intro": "La puerta de entrada y salida del viaje: una tarde para pasear por el centro antes de salir hacia la selva, y una última noche de piscina y descanso antes del vuelo de vuelta.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [
+            {"label": "Confirmación recepción hotel", "url": "https://drive.google.com/file/d/1x2NgRnMRe9wQvxcNW7kp_LI7oLxRFFjX/view?usp=drive_link"},
+            {"label": "Hotel 18-20 agosto", "url": "https://drive.google.com/file/d/1YFIrOZ9XNwknPJVBOn84haf7SLlnROF_/view?usp=drive_link"},
+            {"label": "Hotel 29-30 agosto", "url": "https://drive.google.com/file/d/12w0EEeCaBu1aXeFs7zzg1QJHnbH1zDqn/view?usp=drive_link"},
+        ],
     },
     {
         "id": "tortuguero",
@@ -53,7 +70,7 @@ DESTINATIONS = [
         ],
         "intro": "Un pueblo al que solo se llega en barca, rodeado de canales. Monos, caimanes y, si hay suerte, tortugas desovando de noche en la playa.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "la-fortuna",
@@ -66,7 +83,7 @@ DESTINATIONS = [
         ],
         "intro": "Tres días a los pies del volcán Arenal: cascada, puentes colgantes sobre el bosque nuboso y aguas termales para descansar.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "manuel-antonio",
@@ -79,7 +96,7 @@ DESTINATIONS = [
         ],
         "intro": "Selva y playa a la vez: el parque nacional con sus monos y perezosos, atardeceres en Espadilla y una excursión a Uvita a ver ballenas.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
 ]
 
@@ -93,7 +110,7 @@ ACTIVITIES = [
         "title": "Visita a San José",
         "description": "Paseo por el centro: plaza principal, Teatro Nacional y Mercado Central. Comida típica en el mercado o alrededores. Vuelta al hotel sobre las 16:00 para piscina y descanso.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     # --- Tortuguero ---
     {
@@ -104,7 +121,7 @@ ACTIVITIES = [
         "title": "Traslado por los canales",
         "description": "Recogida en el hotel a las 06:00. A Tortuguero solo se puede llegar en barca: traslado en bus y después en bote por los canales, con visita al pueblo a la llegada.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "parque-nacional-tortuguero",
@@ -114,7 +131,7 @@ ACTIVITIES = [
         "title": "Parque Nacional Tortuguero",
         "description": "Paseo en bote por los canales para observar monos, caimanes y fauna del parque. Por la tarde, caminata por los senderos del bosque.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "desove-tortugas",
@@ -124,7 +141,7 @@ ACTIVITIES = [
         "title": "Tour de desove de tortugas",
         "description": "Salida nocturna guiada a la playa para ver a las tortugas desovar. Una de las experiencias más especiales del viaje.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     # --- La Fortuna ---
     {
@@ -135,7 +152,7 @@ ACTIVITIES = [
         "title": "Catarata La Fortuna",
         "description": "Descenso hasta la cascada de La Fortuna, una de las más fotografiadas de Costa Rica. Zona habilitada para baño en la poza.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "puentes-colgantes",
@@ -145,7 +162,7 @@ ACTIVITIES = [
         "title": "Puentes Colgantes de Mistico",
         "description": "Recorrido guiado por el bosque nuboso a través de los puentes colgantes, con vistas al volcán Arenal.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "ecotermales",
@@ -155,7 +172,7 @@ ACTIVITIES = [
         "title": "Ecotermales",
         "description": "Tarde de relax en las aguas termales del volcán, con comida incluida.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     # --- Manuel Antonio ---
     {
@@ -166,7 +183,7 @@ ACTIVITIES = [
         "title": "Cocodrilos en el Río Tárcoles",
         "description": "Parada en el camino hacia Manuel Antonio para ver los grandes cocodrilos del río Tárcoles desde el puente.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "manglares",
@@ -176,7 +193,7 @@ ACTIVITIES = [
         "title": "Tour de manglares en bote",
         "description": "Recogida en el hotel a las 08:00 para un recorrido en bote por los manglares, observando aves y fauna local.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "parque-nacional-manuel-antonio",
@@ -186,7 +203,7 @@ ACTIVITIES = [
         "title": "Parque Nacional Manuel Antonio",
         "description": "Visita guiada al parque nacional: fauna y playas dentro del parque. Tarde libre de playa.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
     {
         "id": "ballenas-uvita",
@@ -196,7 +213,7 @@ ACTIVITIES = [
         "title": "Avistamiento de ballenas en Uvita",
         "description": "Excursión en barco hasta Uvita para el avistamiento de ballenas. Tarde de playa y despedida de Manuel Antonio.",
         "photos_url": None,
-        "docs_url": None,
+        "docs": [],
     },
 ]
 
@@ -236,8 +253,8 @@ DOC_CATEGORIES = [
         "icon": "plane",
         "color": "ciudad",
         "items": [
-            {"title": "Madrid → Panamá → San José", "subtitle": "18 agosto · sale 15:05, llega 21:45", "url": None},
-            {"title": "San José → Panamá → Madrid", "subtitle": "30 agosto · sale 14:48, llega 31/08 13:15", "url": None},
+            {"title": "Madrid → Panamá → San José", "subtitle": "18 agosto · sale 15:05, llega 21:45", "docs": []},
+            {"title": "San José → Panamá → Madrid", "subtitle": "30 agosto · sale 14:48, llega 31/08 13:15", "docs": []},
         ],
     },
     {
@@ -245,10 +262,14 @@ DOC_CATEGORIES = [
         "icon": "hotel",
         "color": "hoja",
         "items": [
-            {"title": "Holiday Inn Express San José", "subtitle": "18-20 ago y 29-30 ago", "url": None},
-            {"title": "Laguna Lodge — Tortuguero", "subtitle": "20-22 ago", "url": None},
-            {"title": "Hotel Monte Real — La Fortuna", "subtitle": "22-25 ago", "url": None},
-            {"title": "Iglú Beach Lodge — Manuel Antonio", "subtitle": "25-29 ago", "url": None},
+            {"title": "Holiday Inn Express San José", "subtitle": "18-20 ago y 29-30 ago", "docs": [
+                {"label": "Confirmación recepción hotel", "url": "https://drive.google.com/file/d/1x2NgRnMRe9wQvxcNW7kp_LI7oLxRFFjX/view?usp=drive_link"},
+                {"label": "Hotel 18-20 agosto", "url": "https://drive.google.com/file/d/1YFIrOZ9XNwknPJVBOn84haf7SLlnROF_/view?usp=drive_link"},
+                {"label": "Hotel 29-30 agosto", "url": "https://drive.google.com/file/d/12w0EEeCaBu1aXeFs7zzg1QJHnbH1zDqn/view?usp=drive_link"},
+            ]},
+            {"title": "Laguna Lodge — Tortuguero", "subtitle": "20-22 ago", "docs": []},
+            {"title": "Hotel Monte Real — La Fortuna", "subtitle": "22-25 ago", "docs": []},
+            {"title": "Iglú Beach Lodge — Manuel Antonio", "subtitle": "25-29 ago", "docs": []},
         ],
     },
     {
@@ -256,7 +277,7 @@ DOC_CATEGORIES = [
         "icon": "shield",
         "color": "oceano",
         "items": [
-            {"title": "Póliza y condiciones", "subtitle": "Cobertura del 18 al 31 de agosto", "url": None},
+            {"title": "Póliza y condiciones", "subtitle": "Cobertura del 18 al 31 de agosto", "docs": []},
         ],
     },
     {
@@ -264,9 +285,9 @@ DOC_CATEGORIES = [
         "icon": "transfer",
         "color": "guanacaste",
         "items": [
-            {"title": "Tortuguero → La Fortuna", "subtitle": "22 agosto · barca y coche", "url": None},
-            {"title": "La Fortuna → Manuel Antonio", "subtitle": "25 agosto", "url": None},
-            {"title": "Manuel Antonio → San José", "subtitle": "29 agosto", "url": None},
+            {"title": "Tortuguero → La Fortuna", "subtitle": "22 agosto · barca y coche", "docs": []},
+            {"title": "La Fortuna → Manuel Antonio", "subtitle": "25 agosto", "docs": []},
+            {"title": "Manuel Antonio → San José", "subtitle": "29 agosto", "docs": []},
         ],
     },
 ]

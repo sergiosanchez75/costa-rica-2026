@@ -227,14 +227,30 @@ def link_tile(label, url, icon, primary=False):
     return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelo en data.py</span></span>' % label
 
 
+def doc_tiles(docs, icon, empty_label, primary_first=False):
+    """Una lista de documentos -> una tile por documento, o un hueco discontinuo si está vacía."""
+    if not docs:
+        return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelos en data.py</span></span>' % empty_label
+    tiles = []
+    for i, d in enumerate(docs):
+        cls = "link-tile primary" if (primary_first and i == 0) else "link-tile"
+        tiles.append('<a class="%s" href="%s" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24">%s</svg><span>%s</span></a>' % (cls, d["url"], icon, d["label"]))
+    return "".join(tiles)
+
+
 def doc_item(item):
     icon = ICON_DOC
-    if item["url"]:
-        return '''<a class="doc-item" href="%s" target="_blank" rel="noopener">
+    docs = item.get("docs", [])
+    if docs:
+        links = "".join(
+            '<a class="doc-link" href="%s" target="_blank" rel="noopener">%s</a>' % (d["url"], d["label"])
+            for d in docs
+        )
+        return '''<div class="doc-item">
       <svg class="icon" viewBox="0 0 24 24">%s</svg>
       <div class="n"><b>%s</b><span>%s</span></div>
-      <span class="go">Abrir</span>
-    </a>''' % (item["url"], icon, item["title"], item["subtitle"])
+      <div class="doc-links">%s</div>
+    </div>''' % (icon, item["title"], item["subtitle"], links)
     return '''<span class="doc-item empty">
       <svg class="icon" viewBox="0 0 24 24">%s</svg>
       <div class="n"><b>%s</b><span>%s</span></div>
@@ -455,7 +471,7 @@ def build_destinations():
 </div>''' % {
             "name": d["name"], "dest_hero": dest_hero, "acts": "".join(act_cards),
             "photos": link_tile("Ver fotos del destino", d["photos_url"], ICON_CAMERA, primary=True),
-            "docs": link_tile("Ver documentos", d["docs_url"], ICON_DOC),
+            "docs": doc_tiles(d["docs"], ICON_DOC, "Documentos del destino", primary_first=True),
         }
 
         html = layout(
@@ -492,7 +508,7 @@ def build_activities():
             "did": d["id"], "dname": d["name"], "title": a["title"], "color": d["color"],
             "day": a["day_label"], "time": a["time"], "desc": a["description"],
             "photos": link_tile("Ver fotos de la actividad", a["photos_url"], ICON_CAMERA, primary=True),
-            "docs": link_tile("Ver documentación (entradas, vouchers)", a["docs_url"], ICON_DOC),
+            "docs": doc_tiles(a["docs"], ICON_DOC, "Entradas, vouchers", primary_first=True),
         }
 
         html = layout(
