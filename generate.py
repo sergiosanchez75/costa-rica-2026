@@ -600,9 +600,9 @@ def build_documentos():
 
 def build_gastos():
     pass_hash = hashlib.sha256(data.GASTOS_PASSWORD.encode("utf-8")).hexdigest()
-    csv_url = data.EXPENSES_SHEET_CSV_URL
+    api_url = data.EXPENSES_API_URL
 
-    if csv_url:
+    if api_url:
         content_html = '''<div id="expense-cards" class="exp-cards"></div>
   <div class="grid-2" style="margin-top:28px;">
     <div>
@@ -618,9 +618,10 @@ def build_gastos():
         content_html = '''<div class="callout">
       <h4>Conecta tu hoja de gastos</h4>
       <ul>
-        <li>Crea una Google Sheet con las columnas <b>Fecha, Tipo de Gasto, Descripción, Lugar, Importe</b> (los valores de Tipo de Gasto y Lugar deben coincidir con EXPENSE_CATEGORIES / EXPENSE_PLACES en data.py).</li>
-        <li>Archivo → Compartir → Publicar en la Web → elige la hoja → formato CSV → Publicar.</li>
-        <li>Pega ese enlace en <code>EXPENSES_SHEET_CSV_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
+        <li>Crea una Google Sheet y, en ella, ve a <b>Extensiones → Apps Script</b>.</li>
+        <li>Pega el contenido de <code>apps-script/Code.gs</code> (en este proyecto) y despliega como <b>Aplicación web</b> (Ejecutar como: Yo · Acceso: Cualquier usuario).</li>
+        <li>Pega la URL que te da (termina en <code>/exec</code>) en <code>EXPENSES_API_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
+        <li>Pasos completos en <code>GUIA.md</code>.</li>
       </ul>
     </div>'''
 
@@ -654,6 +655,10 @@ def build_gastos():
   </div>
 </div>
 
+<button type="button" id="exp-add-btn" class="exp-fab" aria-label="Añadir gasto" title="Añadir gasto">
+  <svg class="icon" viewBox="0 0 24 24" style="width:24px;height:24px;stroke-width:2"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
 <div id="exp-popup" class="exp-popup-overlay" onclick="if(event.target===this) closeExpensePopup()">
   <div class="exp-popup-box">
     <div class="exp-popup-head">
@@ -662,10 +667,42 @@ def build_gastos():
     </div>
     <div id="exp-popup-list" class="exp-list"></div>
   </div>
+</div>
+
+<div id="exp-form-modal" class="exp-popup-overlay" onclick="if(event.target===this) closeExpenseForm()">
+  <div class="exp-popup-box exp-form-box">
+    <div class="exp-popup-head">
+      <h3 id="exp-form-title">Añadir gasto</h3>
+      <button type="button" class="exp-popup-close" onclick="closeExpenseForm()" aria-label="Cerrar">&times;</button>
+    </div>
+    <form id="exp-form" class="exp-form">
+      <input type="hidden" id="exp-form-id">
+      <label>Fecha <span class="req">*</span>
+        <input type="date" id="exp-form-fecha" required>
+      </label>
+      <label>Tipo de gasto <span class="req">*</span>
+        <select id="exp-form-tipo" required></select>
+      </label>
+      <label>Descripción
+        <input type="text" id="exp-form-desc" placeholder="Ej. Cena en el mercado" maxlength="200">
+      </label>
+      <label>Lugar
+        <select id="exp-form-lugar"></select>
+      </label>
+      <label>Importe (€) <span class="req">*</span>
+        <input type="number" id="exp-form-importe" step="0.01" min="0.01" required>
+      </label>
+      <p id="exp-form-error" class="pass-error">Revisa los campos obligatorios: fecha, tipo de gasto e importe.</p>
+      <div class="exp-form-actions">
+        <button type="button" id="exp-form-delete" class="exp-form-delete">Eliminar</button>
+        <button type="submit" class="exp-form-save">Guardar</button>
+      </div>
+    </form>
+  </div>
 </div>''' % {"lock_icon": ICON_LOCK, "content": content_html}
 
     expense_config = {
-        "csvUrl": csv_url,
+        "apiUrl": api_url,
         "categories": [{"label": c["label"], "color": c["color"]} for c in data.EXPENSE_CATEGORIES],
         "places": [{"label": p["label"], "color": p["color"]} for p in data.EXPENSE_PLACES],
     }

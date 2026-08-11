@@ -304,33 +304,40 @@ MISC_DOCS = [
 ]
 
 # ============================================================================
-# GASTOS DEL VIAJE — registrados en una Google Sheet compartida (no aqui).
+# GASTOS DEL VIAJE — leidos y escritos en una Google Sheet, via Apps Script.
 # ============================================================================
 #
-# COMO CONECTARLO
-# ------------------------------------------------
-# 1. Crea una Google Sheet con estas 5 columnas exactas en la primera fila
-#    (el orden no importa, pero los nombres si):
+# La pagina de Gastos no solo lee la hoja: tambien permite anadir, editar y
+# borrar gastos desde la propia web (boton "+"). Para que eso funcione, la
+# hoja necesita una pequeña API delante (Google Apps Script, gratis, ligado a
+# tu cuenta de Google) en vez de un simple "publicar como CSV".
 #
-#       Fecha | Tipo de Gasto | Descripción | Lugar | Importe
+# COMO CONECTARLO (una sola vez)
+# ------------------------------------------------
+# 1. Crea una Google Sheet nueva. En Apps Script se crea sola la cabecera la
+#    primera vez que se usa, pero si prefieres escribirla tu, que sea:
+#
+#       ID | Fecha | Tipo de Gasto | Descripción | Lugar | Importe
 #
 #    - "Tipo de Gasto" debe ser uno de los valores de EXPENSE_CATEGORIES (abajo).
 #    - "Lugar" debe ser uno de los valores de EXPENSE_PLACES (abajo).
-#    - "Importe" en numeros, sin simbolo de moneda (ej. 12.50 o 12,50).
 #
-# 2. En Sheets: Archivo -> Compartir -> Publicar en la Web. Elige la hoja,
-#    formato "Valores separados por comas (.csv)", y pulsa Publicar.
-# 3. Copia el enlace que te da (algo como
-#    ".../pub?gid=0&single=true&output=csv") y pegalo en EXPENSES_SHEET_CSV_URL.
-# 4. Ejecuta "python generate.py" otra vez. La web ya se encarga de leer la
-#    hoja, sumar por categoria, dibujar el quesito y la lista - no hace falta
-#    tocar mas codigo cuando anadas filas nuevas a la hoja, solo recargar la
-#    pagina (con la contraseña puesta, claro).
+# 2. En esa hoja: Extensiones -> Apps Script.
+# 3. Borra lo que haya en Code.gs y pega el contenido de
+#    apps-script/Code.gs (en este mismo proyecto).
+# 4. Implementar -> Nueva implementacion -> tipo "Aplicacion web".
+#    - Ejecutar como: Yo
+#    - Quien tiene acceso: Cualquier usuario
+#    Implementar, y autoriza el acceso cuando te lo pida (es tu propia hoja).
+# 5. Copia la URL que te da (termina en /exec) y pegala en EXPENSES_API_URL.
+# 6. Ejecuta "python generate.py" otra vez.
 #
-# Mientras EXPENSES_SHEET_CSV_URL este en None, la pagina de Gastos muestra un
+# Instrucciones completas, con capturas de cada paso, en GUIA.md.
+#
+# Mientras EXPENSES_API_URL este en None, la pagina de Gastos muestra un
 # hueco explicando como conectarlo.
 
-EXPENSES_SHEET_CSV_URL = None
+EXPENSES_API_URL = None
 
 EXPENSE_CATEGORIES = [
     {"label": "Avión", "color": "#6e5d8c"},

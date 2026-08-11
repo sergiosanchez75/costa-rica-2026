@@ -1,5 +1,5 @@
 // Costa Rica 2026 — comportamiento compartido: menú móvil, cortina de gastos
-// y lector de la Google Sheet de gastos.
+// y el lector/editor de la Google Sheet de gastos (via Apps Script).
 
 function toggleNav() {
   var links = document.getElementById('nav-links');
@@ -19,7 +19,15 @@ function unlockGastos(expenseConfig) {
   var content = document.getElementById('gastos-content');
   if (lock) lock.classList.add('hide');
   if (content) content.classList.add('show');
-  if (expenseConfig && expenseConfig.csvUrl) loadExpenses(expenseConfig);
+
+  var fab = document.getElementById('exp-add-btn');
+  if (expenseConfig && expenseConfig.apiUrl) {
+    if (fab) fab.classList.add('show');
+    initExpenseForm(expenseConfig);
+    loadExpenses(expenseConfig);
+  } else if (fab) {
+    fab.classList.remove('show');
+  }
 }
 
 function initGastos(expectedHash, expenseConfig) {
@@ -44,70 +52,55 @@ function initGastos(expectedHash, expenseConfig) {
   });
 }
 
-/* ---------------- Gastos: lectura de la Google Sheet ---------------- */
+/* ---------------- Gastos: lectura/escritura via Apps Script ---------------- */
+
+var currentExpenseConfig = null;
+var currentExpenseItems = [];
+var expenseFormReady = false;
 
 function normalizeLabel(s) {
   return (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-}
-
-function parseAmount(s) {
-  if (!s) return 0;
-  s = s.toString().trim().replace(/[€$\s]/g, '');
-  if (s.indexOf(',') > -1 && s.indexOf('.') > -1) {
-    s = s.replace(/\./g, '').replace(',', '.');
-  } else if (s.indexOf(',') > -1) {
-    s = s.replace(',', '.');
-  }
-  var n = parseFloat(s);
-  return isNaN(n) ? 0 : n;
 }
 
 function fmtEUR(n) {
   return n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 }
 
-function parseCSV(text) {
-  var rows = [];
-  var row = [];
-  var field = '';
-  var inQuotes = false;
-  for (var i = 0; i < text.length; i++) {
-    var c = text[i];
-    if (inQuotes) {
-      if (c === '"') {
-        if (text[i + 1] === '"') { field += '"'; i++; } else { inQuotes = false; }
-      } else {
-        field += c;
-      }
-    } else if (c === '"') {
-      inQuotes = true;
-    } else if (c === ',') {
-      row.push(field); field = '';
-    } else if (c === '\n') {
-      row.push(field); rows.push(row); row = []; field = '';
-    } else if (c === '\r') {
-      // saltar
-    } else {
-      field += c;
-    }
-  }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
-  return rows.filter(function (r) { return r.some(function (c) { return c.trim() !== ''; }); });
-}
-
-function rowsToObjects(rows) {
-  if (!rows.length) return [];
-  var headers = rows[0].map(function (h) { return h.trim(); });
-  return rows.slice(1).map(function (r) {
-    var obj = {};
-    headers.forEach(function (h, i) { obj[h] = (r[i] || '').trim(); });
-    return obj;
-  });
-}
-
 function matchByLabel(list, label) {
   var n = normalizeLabel(label);
   return list.find(function (x) { return normalizeLabel(x.label) === n; });
+}
+
+function isoToSpanishDate(iso) {
+  if (!iso) return '';
+  var p = iso.split('-');
+  if (p.length !== 3) return iso;
+  return p[2] + '/' + p[1] + '/' + p[0];
+}
+
+function spanishDateToIso(s) {
+  if (!s) return '';
+  var p = s.split('/');
+  if (p.length !== 3) return '';
+  var dd = p[0].padStart(2, '0');
+  var mm = p[1].padStart(2, '0');
+  var yyyy = p[2].length === 2 ? '20' + p[2] : p[2];
+  return yyyy + '-' + mm + '-' + dd;
+}
+
+function toExpenseItem(raw, cfg) {
+  var cat = matchByLabel(cfg.categories, raw.tipo);
+  var place = matchByLabel(cfg.places, raw.lugar);
+  return {
+    id: raw.id,
+    date: raw.fecha || '',
+    category: cat ? cat.label : (raw.tipo || 'Otros'),
+    categoryColor: cat ? cat.color : '#8a8f86',
+    description: raw.descripcion || '',
+    place: place ? place.label : (raw.lugar || 'General'),
+    placeColor: place ? place.color : '#8a8f86',
+    amount: Number(raw.importe) || 0,
+  };
 }
 
 async function loadExpenses(cfg) {
@@ -116,39 +109,32 @@ async function loadExpenses(cfg) {
   var listEl = document.getElementById('expense-list');
   if (!listEl) return;
 
-  var loading = '<p class="hint">Cargando gastos…</p>';
-  if (listEl) listEl.innerHTML = loading;
+  listEl.innerHTML = '<p class="hint">Cargando gastos…</p>';
 
   try {
-    var res = await fetch(cfg.csvUrl, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    var text = await res.text();
-    var objs = rowsToObjects(parseCSV(text));
+    var res = await fetch(cfg.apiUrl, { cache: 'no-store' });
+    var data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'error');
 
-    var items = objs.map(function (o) {
-      var catLabel = o['Tipo de Gasto'] || '';
-      var placeLabel = o['Lugar'] || '';
-      var cat = matchByLabel(cfg.categories, catLabel);
-      var place = matchByLabel(cfg.places, placeLabel);
-      return {
-        date: o['Fecha'] || '',
-        category: cat ? cat.label : (catLabel || 'Otros'),
-        categoryColor: cat ? cat.color : '#8a8f86',
-        description: o['Descripción'] || o['Descripcion'] || '',
-        place: place ? place.label : (placeLabel || 'General'),
-        placeColor: place ? place.color : '#8a8f86',
-        amount: parseAmount(o['Importe']),
-      };
-    }).filter(function (it) { return it.date || it.description || it.amount; });
+    var items = data.items.map(function (raw) { return toExpenseItem(raw, cfg); });
+    currentExpenseItems = items;
+    currentExpenseConfig = cfg;
 
     renderExpenseCards(items, cfg, cardsEl);
     renderExpenseChart(items, cfg, chartEl);
     renderExpenseList(items, listEl);
   } catch (err) {
-    if (listEl) listEl.innerHTML = '<p class="hint">No se ha podido cargar la hoja de gastos. Comprueba el enlace publicado en data.py.</p>';
+    if (listEl) listEl.innerHTML = '<p class="hint">No se ha podido cargar la hoja de gastos. Comprueba el enlace en EXPENSES_API_URL (data.py) y que el despliegue de Apps Script sigue activo.</p>';
     if (cardsEl) cardsEl.innerHTML = '';
     if (chartEl) chartEl.innerHTML = '';
   }
+}
+
+async function postExpense(apiUrl, payload) {
+  var res = await fetch(apiUrl, { method: 'POST', body: JSON.stringify(payload) });
+  var data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'error');
+  return data;
 }
 
 function categoryTotals(items, cfg) {
@@ -261,13 +247,21 @@ function buildExpenseRow(it, showCategory) {
   amt.textContent = fmtEUR(it.amount);
   row.appendChild(amt);
 
+  var editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.className = 'exp-row-edit';
+  editBtn.setAttribute('aria-label', 'Editar gasto');
+  editBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke-width:2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+  editBtn.addEventListener('click', function (e) { e.stopPropagation(); openExpenseForm(it); });
+  row.appendChild(editBtn);
+
   return row;
 }
 
 function renderExpenseList(items, el) {
   el.innerHTML = '';
   if (!items.length) {
-    el.innerHTML = '<p class="hint">Todavía no hay gastos registrados. Añádelos en la Google Sheet.</p>';
+    el.innerHTML = '<p class="hint">Todavía no hay gastos registrados. Pulsa el botón "+" para añadir el primero.</p>';
     return;
   }
   items.slice().reverse().forEach(function (it) {
@@ -311,4 +305,137 @@ function openExpensePopup(label, color, items) {
 function closeExpensePopup() {
   var overlay = document.getElementById('exp-popup');
   if (overlay) overlay.classList.remove('show');
+}
+
+/* ---------------- Formulario de anadir / editar gasto ---------------- */
+
+function populateExpenseFormSelects(cfg) {
+  var tipoSel = document.getElementById('exp-form-tipo');
+  var lugarSel = document.getElementById('exp-form-lugar');
+  if (tipoSel) {
+    tipoSel.innerHTML = '<option value="" disabled>Selecciona…</option>' +
+      cfg.categories.map(function (c) { return '<option value="' + c.label + '">' + c.label + '</option>'; }).join('');
+  }
+  if (lugarSel) {
+    lugarSel.innerHTML = cfg.places.map(function (p) { return '<option value="' + p.label + '">' + p.label + '</option>'; }).join('');
+  }
+}
+
+function openExpenseForm(item) {
+  var modal = document.getElementById('exp-form-modal');
+  var title = document.getElementById('exp-form-title');
+  var idField = document.getElementById('exp-form-id');
+  var fechaField = document.getElementById('exp-form-fecha');
+  var tipoField = document.getElementById('exp-form-tipo');
+  var descField = document.getElementById('exp-form-desc');
+  var lugarField = document.getElementById('exp-form-lugar');
+  var importeField = document.getElementById('exp-form-importe');
+  var deleteBtn = document.getElementById('exp-form-delete');
+  var errorEl = document.getElementById('exp-form-error');
+  if (!modal) return;
+
+  errorEl.classList.remove('show');
+
+  if (item) {
+    title.textContent = 'Editar gasto';
+    idField.value = item.id;
+    fechaField.value = spanishDateToIso(item.date);
+    tipoField.value = item.category;
+    descField.value = item.description;
+    lugarField.value = item.place;
+    importeField.value = item.amount;
+    deleteBtn.style.display = 'inline-flex';
+  } else {
+    title.textContent = 'Añadir gasto';
+    idField.value = '';
+    fechaField.value = new Date().toISOString().slice(0, 10);
+    tipoField.value = '';
+    descField.value = '';
+    lugarField.value = 'General';
+    importeField.value = '';
+    deleteBtn.style.display = 'none';
+  }
+
+  modal.classList.add('show');
+}
+
+function closeExpenseForm() {
+  var modal = document.getElementById('exp-form-modal');
+  if (modal) modal.classList.remove('show');
+}
+
+function initExpenseForm(cfg) {
+  populateExpenseFormSelects(cfg);
+
+  var addBtn = document.getElementById('exp-add-btn');
+  if (addBtn) addBtn.onclick = function () { openExpenseForm(); };
+
+  if (expenseFormReady) return;
+  expenseFormReady = true;
+
+  var form = document.getElementById('exp-form');
+  var errorEl = document.getElementById('exp-form-error');
+  var saveBtn = form.querySelector('.exp-form-save');
+  var deleteBtn = document.getElementById('exp-form-delete');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    errorEl.classList.remove('show');
+
+    var id = document.getElementById('exp-form-id').value;
+    var fechaIso = document.getElementById('exp-form-fecha').value;
+    var tipo = document.getElementById('exp-form-tipo').value;
+    var desc = document.getElementById('exp-form-desc').value.trim();
+    var lugar = document.getElementById('exp-form-lugar').value;
+    var importeStr = document.getElementById('exp-form-importe').value;
+    var importe = parseFloat(importeStr);
+
+    if (!fechaIso || !tipo || !importeStr || isNaN(importe) || importe <= 0) {
+      errorEl.textContent = 'Revisa los campos obligatorios: fecha, tipo de gasto e importe.';
+      errorEl.classList.add('show');
+      return;
+    }
+
+    var payload = {
+      action: id ? 'edit' : 'add',
+      id: id || undefined,
+      fecha: isoToSpanishDate(fechaIso),
+      tipo: tipo,
+      descripcion: desc,
+      lugar: lugar || 'General',
+      importe: importe,
+    };
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Guardando…';
+    try {
+      await postExpense(currentExpenseConfig.apiUrl, payload);
+      closeExpenseForm();
+      await loadExpenses(currentExpenseConfig);
+    } catch (err) {
+      errorEl.textContent = 'No se ha podido guardar. Comprueba tu conexión e inténtalo de nuevo.';
+      errorEl.classList.add('show');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Guardar';
+    }
+  });
+
+  deleteBtn.addEventListener('click', async function () {
+    var id = document.getElementById('exp-form-id').value;
+    if (!id) return;
+    if (!confirm('¿Seguro que quieres eliminar este gasto?')) return;
+
+    deleteBtn.disabled = true;
+    try {
+      await postExpense(currentExpenseConfig.apiUrl, { action: 'delete', id: id });
+      closeExpenseForm();
+      await loadExpenses(currentExpenseConfig);
+    } catch (err) {
+      errorEl.textContent = 'No se ha podido eliminar. Inténtalo de nuevo.';
+      errorEl.classList.add('show');
+    } finally {
+      deleteBtn.disabled = false;
+    }
+  });
 }

@@ -39,23 +39,27 @@ Edita `GASTOS_PASSWORD` en `data.py` y regenera. Recuerda: es solo una "cortina"
 
 ## Gastos del día a día (comidas, snacks, ubers...)
 
-La página de Gastos lee una Google Sheet en directo: tarjetas por categoría, un quesito y la lista completa se calculan solos a partir de lo que haya en la hoja — no hace falta tocar código para añadir un gasto nuevo, solo añadir una fila.
+La página de Gastos lee y escribe en directo en una Google Sheet: tarjetas por categoría, un quesito y la lista completa se calculan solos, y desde la propia web (botón **+** abajo a la derecha) puedes añadir, editar o eliminar un gasto sin tocar la hoja a mano.
 
-1. Crea una Google Sheet con estas columnas exactas en la primera fila:
+Como una Sheet normal no permite escribir desde fuera, hace falta una pequeña API delante: **Google Apps Script**, gratis y ligado a tu cuenta de Google. Es un paso de configuración único:
 
-   ```
-   Fecha | Tipo de Gasto | Descripción | Lugar | Importe
-   ```
+1. Crea una Google Sheet nueva para los gastos (puede estar vacía, la cabecera se crea sola).
+2. En esa hoja: **Extensiones → Apps Script**.
+3. Borra lo que haya en `Code.gs` y pega el contenido completo de [`apps-script/Code.gs`](apps-script/Code.gs) (está en este mismo proyecto).
+4. **Implementar → Nueva implementación**, tipo **Aplicación web**:
+   - Ejecutar como: **Yo**
+   - Quién tiene acceso: **Cualquier usuario**
+   - Pulsa **Implementar**.
+5. Google te pedirá autorizar el acceso (es tu propia hoja — verás un aviso de "app no verificada", es normal para scripts personales; pulsa Avanzado → ir a la app).
+6. Copia la URL que termina en `/exec` y pégala en `EXPENSES_API_URL` (arriba de la sección de gastos en `data.py`).
+7. Ejecuta `python generate.py`, guarda y sube los cambios.
 
-   - `Tipo de Gasto` tiene que ser uno de: Avión, Hoteles, Transportes, Actividades, Comidas, Snacks, Compras Varias, Seguro Viaje, eSim.
-   - `Lugar` tiene que ser uno de: General, San Jose, Tortuguero, La Fortuna, Manuel Antonio.
-   - `Importe` en número (con coma o con punto, ambos funcionan).
+A partir de ahí, todo se hace desde la web: el botón **+** abre un formulario (fecha con calendario, tipo de gasto, descripción, lugar e importe — fecha, tipo e importe son obligatorios), y cada gasto de la lista tiene un lapicero para editarlo o borrarlo. Los cambios se guardan directamente en tu Google Sheet.
 
-2. **Archivo → Compartir → Publicar en la Web**. Elige la hoja, formato **Valores separados por comas (.csv)**, pulsa **Publicar** y copia el enlace que te da.
-3. Pégalo en `EXPENSES_SHEET_CSV_URL` (arriba del todo de la sección de gastos en `data.py`) y ejecuta `python generate.py` una vez.
-4. A partir de ahí, para añadir un gasto solo tienes que abrir la Sheet (desde el móvil, con la app de Google Sheets va perfecto) y añadir una fila — la próxima vez que abras la página de Gastos y metas la contraseña, aparece solo. No hace falta volver a ejecutar `generate.py` para cada gasto nuevo.
-
-Nota de privacidad: "Publicar en la Web" hace que cualquiera con ese enlace concreto pueda leer la hoja (igual que los documentos de Drive) — no aparece listada en ningún sitio ni es buscable, pero no está protegida por la contraseña de Gastos en sí misma. Si algún día quieres cambiar los tipos de gasto o los lugares, edita `EXPENSE_CATEGORIES` / `EXPENSE_PLACES` en `data.py` (y usa esos mismos nombres en la columna correspondiente de la Sheet).
+Notas:
+- `Tipo de Gasto` solo puede ser uno de los valores de `EXPENSE_CATEGORIES` en `data.py` (Avión, Hoteles, Transportes, Actividades, Comidas, Snacks, Compras Varias, Seguro Viaje, eSim) — el desplegable del formulario ya los ofrece, no hace falta escribirlos a mano.
+- Si algún día vuelves a desplegar el script (por ejemplo tras editarlo), Apps Script te da una URL `/exec` nueva — actualízala en `data.py`.
+- Privacidad: la URL de Apps Script solo la conocéis quienes la tengan (no está indexada ni es adivinable), pero no está protegida por la contraseña de Gastos en sí misma — es el mismo nivel de privacidad que los enlaces de Drive que ya usas para documentos.
 
 ## Publicar en GitHub Pages (para abrir la web desde el móvil)
 
