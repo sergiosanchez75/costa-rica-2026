@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gastos — Costa Rica 2026</title>
+<meta name="description" content="Desglose de gastos del viaje (privado).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%A6%9C%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<nav class="topnav">
+  <div class="row">
+    <a class="brand" href="index.html"><svg class="icon" viewBox="0 0 24 24"><path d="M4 20c4-10 8-14 16-16-2 8-6 12-16 16Z"/><path d="M4 20c2-4 4-6 7-8"/></svg>Costa Rica 2026</a>
+    <button class="burger" onclick="toggleNav()" aria-label="Abrir menú">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <div class="links" id="nav-links"><a class="link" href="index.html">Inicio</a><a class="link" href="destinos/san-jose.html">San José</a><a class="link" href="destinos/tortuguero.html">Tortuguero</a><a class="link" href="destinos/la-fortuna.html">La Fortuna</a><a class="link" href="destinos/manuel-antonio.html">Manuel Antonio</a><a class="link" href="documentos.html">Documentos</a><a class="link active" href="gastos.html">Gastos</a></div>
+  </div>
+</nav>
+
+<main class="wrap">
+<div class="crumb"><a href="index.html">Inicio</a> / Gastos</div>
+<div class="sec-head">
+  <p class="sec-eyebrow">Privado</p>
+  <h2>Gastos del viaje</h2>
+</div>
+
+<div id="gastos-lock" class="lock-wrap">
+  <div class="lock-badge"><svg class="icon" viewBox="0 0 24 24" style="stroke:var(--niebla)"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+  <h2 style="margin:0;">Contenido privado</h2>
+  <p class="hint">Introduce la contraseña para ver el desglose de gastos.</p>
+  <form id="pass-form" class="pass-form">
+    <input id="gastos-pass" type="password" placeholder="Contraseña" autocomplete="off">
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="pass-error" class="pass-error">Contraseña incorrecta, inténtalo de nuevo.</p>
+</div>
+
+<div id="gastos-content">
+  <div class="exp-summary">
+    <div class="exp-stat"><div class="l">Total del viaje</div><div class="v">10.641.04 €</div></div>
+    <div class="exp-stat"><div class="l">Ya pagado</div><div class="v" style="color:var(--hoja-ink)">4.352.16 €</div></div>
+    <div class="exp-stat"><div class="l">Pendiente de pago</div><div class="v" style="color:var(--guanacaste)">2.285.33 €</div></div>
+  </div>
+  <div class="exp-bars"><div class="exp-bar-row">
+      <span class="lbl">Avión</span>
+      <div class="track"><div class="fill" style="width:100%; background:var(--ciudad)"></div></div>
+      <span class="amt">4.211.16 €</span>
+    </div><div class="exp-bar-row">
+      <span class="lbl">Alojamiento</span>
+      <div class="track"><div class="fill" style="width:58%; background:var(--hoja)"></div></div>
+      <span class="amt">2.461.07 €</span>
+    </div><div class="exp-bar-row">
+      <span class="lbl">Comidas</span>
+      <div class="track"><div class="fill" style="width:39%; background:var(--mango)"></div></div>
+      <span class="amt">1.655.00 €</span>
+    </div><div class="exp-bar-row">
+      <span class="lbl">Actividades</span>
+      <div class="track"><div class="fill" style="width:27%; background:var(--guanacaste)"></div></div>
+      <span class="amt">1.128.81 €</span>
+    </div><div class="exp-bar-row">
+      <span class="lbl">Traslados</span>
+      <div class="track"><div class="fill" style="width:21%; background:var(--oceano)"></div></div>
+      <span class="amt">900.00 €</span>
+    </div><div class="exp-bar-row">
+      <span class="lbl">Seguro de viaje</span>
+      <div class="track"><div class="fill" style="width:7%; background:var(--tinta)"></div></div>
+      <span class="amt">285.00 €</span>
+    </div></div>
+  <div style="margin-top:28px;">
+    <div class="callout">
+      <h4>Recuerda</h4>
+      <ul>
+        <li>Esta contraseña es solo una cortina — cualquiera con conocimientos técnicos podría ver el código fuente y saltársela. No es una protección real.</li>
+        <li>Para cambiarla, edita <code>GASTOS_PASSWORD</code> en <code>data.py</code> y vuelve a ejecutar <code>python generate.py</code>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</main>
+<footer>
+  <div class="wrap"><p>Cuaderno de viaje — Costa Rica 2026 · 18 - 30 agosto 2026</p></div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>initGastos('04cc1f2df15b5e5196be126b202c4b22cf0cf763bd733e0a2475795218f93244');</script>
+</body>
+</html>
