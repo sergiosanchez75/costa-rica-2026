@@ -280,8 +280,7 @@ DAYS = [
 TRANSPORT_DOCS = [
     {"title": "Madrid → Panamá → San José", "subtitle": "Vuelo · 18 agosto · sale 15:05, llega 21:45", "docs": []},
     {"title": "San José → Panamá → Madrid", "subtitle": "Vuelo · 30 agosto · sale 14:48, llega 31/08 13:15", "docs": []},
-    {"title": "Tortuguero → La Fortuna", "subtitle": "Traslado · 22 agosto · barca y coche", "docs": []},
-    {"title": "Tortuguero (Guápiles) → Manuel Antonio", "subtitle": "Traslado", "docs": [
+    {"title": "Tortuguero → La Fortuna", "subtitle": "Traslado · 22 agosto · barca y coche", "docs": [
         {"label": "Voucher traslado", "url": "https://drive.google.com/file/d/1ZevFsPa2rYAWWBaCkgqxLaviYThfvk3d/view?usp=drive_link"},
     ]},
     {"title": "La Fortuna → Manuel Antonio", "subtitle": "Traslado · 25 agosto", "docs": [
