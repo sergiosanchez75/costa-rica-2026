@@ -278,7 +278,12 @@ DAYS = [
 # concretos: vuelos y traslados (TRANSPORT_DOCS) y todo lo demás (MISC_DOCS).
 
 TRANSPORT_DOCS = [
-    {"title": "Madrid → Panamá → San José", "subtitle": "Vuelo · 18 agosto · sale 15:05, llega 21:45", "docs": []},
+    {"title": "Madrid → Panamá → San José", "subtitle": "Vuelo · 18 agosto · sale 15:05, llega 21:45", "docs": [
+        {"label": "Tarjeta embarque Sergio", "url": "https://drive.google.com/file/d/1Kg-RLsYOsZ0Q5wW15lxHP6BacXPb0mUW/view?usp=drive_link"},
+        {"label": "Tarjeta embarque Martina", "url": "https://drive.google.com/file/d/1GpfVIjxF3327njqrbodm6_uQkY6R5OsL/view?usp=drive_link"},
+        {"label": "Tarjeta embarque Gonzalo", "url": "https://drive.google.com/file/d/10weSwf2O80BLtsQF3W2j1L_vxJWnCp-6/view?usp=drive_link"},
+        {"label": "Tarjeta embarque Celia", "url": "https://drive.google.com/file/d/16kG0dwnNLuv8Z43oZvt6yUhHWTtddz2w/view?usp=drive_link"},
+    ]},
     {"title": "San José → Panamá → Madrid", "subtitle": "Vuelo · 30 agosto · sale 14:48, llega 31/08 13:15", "docs": []},
     {"title": "Tortuguero → La Fortuna", "subtitle": "Traslado · 22 agosto · barca y coche", "docs": [
         {"label": "Voucher traslado", "url": "https://drive.google.com/file/d/1ZevFsPa2rYAWWBaCkgqxLaviYThfvk3d/view?usp=drive_link"},
