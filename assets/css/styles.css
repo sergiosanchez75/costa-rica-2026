@@ -136,13 +136,13 @@ nav.topnav .burger:hover{background:var(--niebla-2);}
   padding:64px 0 52px;
 }
 .hero.small{padding:40px 0 36px;}
-.hero-photo{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 68%; z-index:0;}
+.hero-photo{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:30% 85%; z-index:0;}
 .hero-overlay{
   position:absolute; inset:0; z-index:1;
   background:
     radial-gradient(115% 130% at 12% -10%, color-mix(in srgb, var(--oceano) 55%, transparent), transparent 58%),
     radial-gradient(85% 110% at 92% 108%, color-mix(in srgb, var(--mango) 45%, transparent), transparent 55%),
-    linear-gradient(185deg, rgba(10,22,17,.35) 0%, rgba(10,22,17,.42) 40%, rgba(8,17,13,.88) 100%);
+    linear-gradient(185deg, rgba(10,22,17,.22) 0%, rgba(10,22,17,.3) 40%, rgba(8,17,13,.72) 100%);
 }
 .hero .ridge{position:absolute; left:0; right:0; bottom:-2px; height:70px; opacity:.5; z-index:1;}
 .hero .critter{z-index:2;}
@@ -153,22 +153,20 @@ nav.topnav .burger:hover{background:var(--niebla-2);}
 .hero h1{
   font-family:'Pacifico','Lobster','Brush Script MT',cursive;
   font-weight:400; font-size:clamp(42px,7.4vw,68px); line-height:1.15;
-  margin:2px 0 14px; text-wrap:balance; letter-spacing:.005em;
+  margin:2px 0 6px; text-wrap:balance; letter-spacing:.005em;
   color:#fdf6e8;
-  filter:drop-shadow(0 4px 3px rgba(0,0,0,.4)) drop-shadow(0 1px 0 rgba(0,0,0,.5));
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));
 }
-@supports (background-clip:text) or (-webkit-background-clip:text){
-  .hero h1{
-    background:linear-gradient(180deg,
-      #0b4a8f 0%, #0b4a8f 16%,
-      #ffffff 16%, #ffffff 34%,
-      #d8232a 34%, #d8232a 66%,
-      #ffffff 66%, #ffffff 84%,
-      #0b4a8f 84%, #0b4a8f 100%);
-    -webkit-background-clip:text; background-clip:text;
-    -webkit-text-fill-color:transparent; color:transparent;
-    -webkit-text-stroke:1px rgba(18,33,28,.35);
-  }
+.hero .title-flag{
+  display:block; width:120px; max-width:42%; height:5px; border-radius:3px;
+  margin:0 0 20px;
+  background:linear-gradient(90deg,
+    #0b4a8f 0%, #0b4a8f 20%,
+    #ffffff 20%, #ffffff 40%,
+    #d8232a 40%, #d8232a 60%,
+    #ffffff 60%, #ffffff 80%,
+    #0b4a8f 80%, #0b4a8f 100%);
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
 }
 .hero p.lead{
   font-family:var(--font-body); font-size:16px; max-width:56ch; color:#e7f0e8; opacity:.92;

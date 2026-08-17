@@ -472,7 +472,7 @@ def layout(title, description, depth, active, body, hero="", extra_script=""):
 <footer>
   <div class="wrap">
     <p>Cuaderno de viaje — Costa Rica 2026 · %(dates)s</p>
-    <p class="photo-credits">Fotos vía Wikimedia Commons: San José © Andres Alvarez (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · La Fortuna © Leonora (Ellie) Enking (<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>) · Manuel Antonio © Mario Roberto Durán Ortiz (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)</p>
+    <p class="photo-credits">Fotos vía Wikimedia Commons: Portada (Río Celeste) © <a href="https://commons.wikimedia.org/wiki/File:Rio_Celeste._Parc_natural_Volcan_Tenorio._Bijagua_de_Upala_-_panoramio_(1).jpg" target="_blank" rel="noopener">Imatges, algunes lliures&hellip;</a> (<a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>) · San José © Andres Alvarez (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · La Fortuna © Leonora (Ellie) Enking (<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>) · Manuel Antonio © Mario Roberto Durán Ortiz (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)</p>
   </div>
 </footer>
 <script src="%(js)s"></script>
@@ -511,12 +511,13 @@ def build_index():
     )
 
     hero = '''<header class="hero">
-  <img class="hero-photo" src="assets/images/hero-costa-rica.jpg" alt="Niebla elevándose sobre la selva tropical de Costa Rica, vista desde la montaña">
+  <img class="hero-photo" src="assets/images/hero-costa-rica.jpg" alt="Poza de aguas turquesa y cascada del Río Celeste, rodeada de selva tropical en Costa Rica">
   <div class="hero-overlay"></div>
   <div class="pura-vida-badge" aria-hidden="true">%(pura_vida)s</div>
   <div class="wrap">
     <p class="hero-eyebrow">Cuaderno de viaje</p>
     <h1>%(title)s</h1>
+    <span class="title-flag" aria-hidden="true"></span>
     <p class="lead">Un sitio para revivir el viaje día a día: calendario, destinos, actividades con fotos y documentos.</p>
     <div class="meta-row">
       <span class="pill"><svg class="icon" viewBox="0 0 24 24" style="width:13px;height:13px">%(cal)s</svg>%(dates)s</span>
