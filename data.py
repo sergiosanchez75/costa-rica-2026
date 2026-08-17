@@ -317,10 +317,14 @@ MISC_DOCS = [
 # mismo nombre y no se cual es la vuestra) - mejor rellenarlos con el numero
 # real de vuestra reserva/confirmacion antes del viaje.
 USEFUL_INFO = [
-    {"title": "Air Europa", "subtitle": "Atención al cliente, 24h", "info": [
-        {"label": "Teléfono", "value": "+34 911 401 501", "tel": True},
+    {"title": "Air Europa", "subtitle": "Probar primero el SUMA Gold, y si no resuelve, el general", "info": [
+        {"label": "SUMA Gold (prioritario)", "value": "+34 911 360 200", "tel": True},
+        {"label": "Atención general (7h-24h)", "value": "+34 911 401 501", "tel": True},
     ], "docs": []},
-    {"title": "Copa Airlines", "subtitle": "Atención al cliente — número sin confirmar, mejor usar el de tu reserva", "info": [], "docs": []},
+    {"title": "Copa Airlines", "subtitle": "Atención al cliente", "info": [
+        {"label": "Panamá (call center)", "value": "+507 217 2672", "tel": True},
+        {"label": "España (oficina ventas, L-V)", "value": "+34 910 761 885", "tel": True},
+    ], "docs": []},
     {"title": "Embajada de España en Costa Rica", "subtitle": "San José · emergencias consulares", "info": [
         {"label": "Teléfono", "value": "+506 2222 1933", "tel": True},
     ], "docs": []},
