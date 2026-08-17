@@ -312,6 +312,28 @@ MISC_DOCS = [
     },
 ]
 
+# Telefonos y contactos utiles del viaje. Los que tienen "info" vacio son los
+# que no he podido confirmar con una fuente fiable (o hay varias sedes con el
+# mismo nombre y no se cual es la vuestra) - mejor rellenarlos con el numero
+# real de vuestra reserva/confirmacion antes del viaje.
+USEFUL_INFO = [
+    {"title": "Air Europa", "subtitle": "Atención al cliente, 24h", "info": [
+        {"label": "Teléfono", "value": "+34 911 401 501", "tel": True},
+    ], "docs": []},
+    {"title": "Copa Airlines", "subtitle": "Atención al cliente — número sin confirmar, mejor usar el de tu reserva", "info": [], "docs": []},
+    {"title": "Embajada de España en Costa Rica", "subtitle": "San José · emergencias consulares", "info": [
+        {"label": "Teléfono", "value": "+506 2222 1933", "tel": True},
+    ], "docs": []},
+    {"title": "Holiday Inn Express San José", "subtitle": "Hotel — hay varias sedes con este nombre, confirma el de tu reserva", "info": [], "docs": []},
+    {"title": "Laguna Lodge — Tortuguero", "subtitle": "Hotel — número sin confirmar", "info": [], "docs": []},
+    {"title": "Hotel Monte Real — La Fortuna", "subtitle": "Hotel", "info": [
+        {"label": "Teléfono", "value": "+506 2479 9357", "tel": True},
+    ], "docs": []},
+    {"title": "Iglú Beach Lodge — Manuel Antonio", "subtitle": "Hotel", "info": [
+        {"label": "Teléfono", "value": "+506 6270 4036", "tel": True},
+    ], "docs": []},
+]
+
 # ============================================================================
 # GASTOS DEL VIAJE — leidos y escritos en una Google Sheet, via Apps Script.
 # ============================================================================

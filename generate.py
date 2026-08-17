@@ -30,6 +30,7 @@ ICON_PIN = '<path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circl
 ICON_LOCK = '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
 ICON_LEAF = '<path d="M4 20c4-10 8-14 16-16-2 8-6 12-16 16Z"/><path d="M4 20c2-4 4-6 7-8"/>'
 ICON_CALENDAR = '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+ICON_PHONE = '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
 ICON_TICKET = '<path d="M3 9a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path d="M13 6v1.5M13 11v2M13 16.5V18"/>'
 
 # Colores del sistema que se van rotando para etiquetas de documentos.
@@ -64,7 +65,7 @@ ACTIVITY_ICON_MAP = {
     "ballenas-uvita": "whale",
 }
 
-DOC_ICONS = {"plane": ICON_PLANE, "hotel": ICON_HOTEL, "shield": ICON_SHIELD, "transfer": ICON_TRANSFER, "ticket": ICON_TICKET}
+DOC_ICONS = {"plane": ICON_PLANE, "hotel": ICON_HOTEL, "shield": ICON_SHIELD, "transfer": ICON_TRANSFER, "ticket": ICON_TICKET, "phone": ICON_PHONE}
 
 GRADIENTS = {
     "ciudad": "linear-gradient(135deg, var(--ciudad), #443a5e 120%)",
@@ -577,6 +578,7 @@ def build_documentos():
         doc_category_html("Hoteles", "hotel", "hoja", hotel_items),
         doc_category_html("Transportes", "transfer", "oceano", data.TRANSPORT_DOCS),
         doc_category_html("Excursiones", "ticket", "guanacaste", excursion_items),
+        doc_category_html("Información de interés", "phone", "mango", data.USEFUL_INFO),
         doc_category_html("Varios", "shield", "ciudad", data.MISC_DOCS),
     ]
 
