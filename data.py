@@ -240,21 +240,21 @@ ACTIVITIES = [
 # Itinerario dia a dia para el calendario de la pagina de inicio.
 DAYS = [
     {"n": 1, "weekday": "Martes", "date": "18 ago", "destination_id": "san-jose",
-     "headline": "Vuelo", "detail": "Madrid → Panamá → San José, llegada 21:45"},
+     "headline": "Vuelo de ida: Madrid → Panamá → San José", "detail": "Madrid → Panamá → San José, llegada 21:45"},
     {"n": 2, "weekday": "Miércoles", "date": "19 ago", "destination_id": "san-jose",
      "headline": "San José", "detail": "Plaza principal, Teatro Nacional, Mercado Central"},
     {"n": 3, "weekday": "Jueves", "date": "20 ago", "destination_id": "tortuguero",
-     "headline": "Llegada", "detail": "Traslado en bus y barca por los canales"},
+     "headline": "Traslado San José → Tortuguero", "detail": "Traslado en bus y barca por los canales"},
     {"n": 4, "weekday": "Viernes", "date": "21 ago", "destination_id": "tortuguero",
      "headline": "PN Tortuguero", "detail": "Canales en bote · senderos · desove de tortugas 20:00"},
     {"n": 5, "weekday": "Sábado", "date": "22 ago", "destination_id": "la-fortuna",
-     "headline": "Llegada", "detail": "Traslado en barca y coche · tarde en el pueblo"},
+     "headline": "Traslado Tortuguero → La Fortuna", "detail": "Traslado en barca y coche · tarde en el pueblo"},
     {"n": 6, "weekday": "Domingo", "date": "23 ago", "destination_id": "la-fortuna",
      "headline": "Catarata", "detail": "Cascada La Fortuna"},
     {"n": 7, "weekday": "Lunes", "date": "24 ago", "destination_id": "la-fortuna",
      "headline": "Puentes", "detail": "Puentes Colgantes de Mistico, con guía"},
     {"n": 8, "weekday": "Martes", "date": "25 ago", "destination_id": "manuel-antonio",
-     "headline": "Llegada", "detail": "Cocodrilos en el Tárcoles · atardecer en Espadilla"},
+     "headline": "Traslado La Fortuna → Manuel Antonio", "detail": "Cocodrilos en el Tárcoles · atardecer en Espadilla"},
     {"n": 9, "weekday": "Miércoles", "date": "26 ago", "destination_id": "manuel-antonio",
      "headline": "Manglares", "detail": "Tour en bote por los manglares"},
     {"n": 10, "weekday": "Jueves", "date": "27 ago", "destination_id": "manuel-antonio",
@@ -264,7 +264,7 @@ DAYS = [
     {"n": 12, "weekday": "Sábado", "date": "29 ago", "destination_id": "san-jose",
      "headline": "Vuelta a SJ", "detail": "Traslado a San José (4h) · piscina"},
     {"n": 13, "weekday": "Domingo", "date": "30 ago", "destination_id": "san-jose",
-     "headline": "Vuelo", "detail": "San José → Panamá → Madrid (llegada 31/08)"},
+     "headline": "Vuelo de regreso", "detail": "San José → Panamá → Madrid (llegada 31/08)"},
 ]
 
 # La página de Documentos tiene 4 categorías: Hoteles, Transportes, Excursiones y Varios.

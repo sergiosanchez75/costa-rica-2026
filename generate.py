@@ -537,9 +537,6 @@ def build_activities():
 </div>
 <p style="font-size:15px; opacity:.85; max-width:60ch; margin:0 0 8px;">%(desc)s</p>
 
-<div class="subhead-row"><h4>Fotos de la actividad</h4></div>
-<div class="link-row">%(photos)s</div>
-
 <div class="subhead-row"><h4>Documentación</h4></div>
 <div class="link-row">%(docs)s</div>
 
@@ -547,7 +544,6 @@ def build_activities():
 <a class="link-tile" href="../destinos/%(did)s.html">&larr; Volver a %(dname)s</a>''' % {
             "did": d["id"], "dname": d["name"], "title": a["title"], "color": d["color"],
             "day": a["day_label"], "time": a["time"], "desc": a["description"],
-            "photos": link_tile("Ver fotos de la actividad", a["photos_url"], ICON_CAMERA, primary=True),
             "docs": doc_tiles(a["docs"], ICON_DOC, "Entradas, vouchers"),
         }
 
