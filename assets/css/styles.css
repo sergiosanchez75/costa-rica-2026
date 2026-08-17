@@ -179,29 +179,17 @@ nav.topnav .burger:hover{background:var(--niebla-2);}
 .theme-chip.c-guanacaste{background:color-mix(in srgb, var(--guanacaste) 55%, transparent); color:#fff0ec;}
 .theme-chip.c-ciudad{background:color-mix(in srgb, var(--ciudad) 60%, transparent); color:#fff5ea;}
 
-/* ---------- STICKER BADGE ---------- */
-.sticker-badge-wrap{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:12px 22px 16px;
-  background:var(--paper);
-  border:3px solid var(--tinta);
-  border-radius:46% 54% 52% 48% / 50% 46% 54% 50%;
-  box-shadow:0 14px 24px -10px rgba(0,0,0,.45);
-  transform:rotate(-4deg);
-  margin:4px 0 22px;
-  position:relative; z-index:2;
+/* ---------- PURA VIDA BADGE (sello tipo pasaporte) ---------- */
+.pura-vida-badge{
+  position:absolute; right:4%; top:9%; z-index:2;
+  width:clamp(92px,11vw,126px);
+  transform:rotate(-8deg);
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));
+  pointer-events:none;
 }
-.sticker-badge-wrap svg{stroke:var(--tinta); width:20px; height:20px;}
-.sticker-badge{
-  font-family:'Lobster','Brush Script MT',cursive;
-  font-size:clamp(22px,3vw,32px);
-  color:var(--mango);
-  -webkit-text-stroke:2px var(--tinta);
-  paint-order:stroke fill;
-  text-shadow:3px 3px 0 var(--tinta);
-  line-height:1;
-  white-space:nowrap;
-}
+.pura-vida-badge svg{width:100%; height:auto; display:block;}
+.pv-badge-word{font-family:var(--font-ui); font-weight:800; font-size:19px; letter-spacing:.01em; fill:#fff;}
+.pv-badge-sub{font-family:var(--font-ui); font-weight:700; font-size:7.6px; letter-spacing:.15em; fill:#fff; opacity:.88;}
 
 /* ---------- CRITTERS ---------- */
 .critter{position:absolute; pointer-events:none; z-index:1; filter:drop-shadow(0 10px 16px rgba(0,0,0,.22));}

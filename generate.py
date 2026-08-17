@@ -100,6 +100,27 @@ DEST_PHOTO = {
     },
 }
 
+# -------------------------------------------------------- pura vida badge --
+
+PURA_VIDA_BADGE = '''<svg viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="pvGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5a441"/>
+      <stop offset="1" stop-color="#e0563f"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="57" fill="none" stroke="#fff" stroke-width="2.5" opacity=".9"/>
+  <circle cx="60" cy="60" r="52" fill="url(#pvGrad)"/>
+  <circle cx="60" cy="60" r="44" fill="none" stroke="#fff" stroke-width="1.2" stroke-dasharray="2.6 4.4" opacity=".6"/>
+  <g fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity=".95">
+    <circle cx="60" cy="34" r="5.5" fill="#fff" stroke="none"/>
+    <path d="M60 20v5.5M60 42.5v5.5M46 34h5.5M68.5 34h5.5M49.9 23.9l3.9 3.9M66.2 40.2l3.9 3.9M70.1 23.9l-3.9 3.9M53.8 40.2l-3.9 3.9"/>
+  </g>
+  <text x="60" y="72" text-anchor="middle" class="pv-badge-word">&iexcl;PURA</text>
+  <text x="60" y="90" text-anchor="middle" class="pv-badge-word">VIDA!</text>
+  <text x="60" y="101" text-anchor="middle" class="pv-badge-sub">COSTA RICA</text>
+</svg>'''
+
 # --------------------------------------------------------- critters SVG --
 
 CRITTERS = {
@@ -485,15 +506,11 @@ def build_index():
     hero = '''<header class="hero">
   <img class="hero-photo" src="assets/images/hero-costa-rica.jpg" alt="Niebla elevándose sobre la selva tropical de Costa Rica, vista desde la montaña">
   <div class="hero-overlay"></div>
-  %(toucan)s
+  <div class="pura-vida-badge" aria-hidden="true">%(pura_vida)s</div>
   <div class="wrap">
     <p class="hero-eyebrow">Cuaderno de viaje</p>
     <h1>%(title)s</h1>
     <p class="lead">Un sitio para revivir el viaje día a día: calendario, destinos, actividades con fotos y documentos.</p>
-    <div class="sticker-badge-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">%(leaf)s</svg>
-      <span class="sticker-badge">&iexcl;Pura Vida!</span>
-    </div>
     <div class="meta-row">
       <span class="pill"><svg class="icon" viewBox="0 0 24 24" style="width:13px;height:13px">%(cal)s</svg>%(dates)s</span>
       <span class="pill"><svg class="icon" viewBox="0 0 24 24" style="width:13px;height:13px">%(pin)s</svg>%(ndest)s zonas · %(ndays)s días</span>
@@ -503,9 +520,8 @@ def build_index():
   </div>
   <svg class="ridge" viewBox="0 0 1200 90" preserveAspectRatio="none"><path d="M0 90 L0 55 C120 20 220 75 340 45 C460 15 540 70 660 40 C780 15 860 65 980 35 C1080 12 1140 55 1200 40 L1200 90 Z" fill="#0d1a15"/></svg>
 </header>''' % {
-        "toucan": critter_div("toucan"),
+        "pura_vida": PURA_VIDA_BADGE,
         "title": data.TRIP_TITLE,
-        "leaf": ICON_LEAF,
         "cal": ICON_CALENDAR,
         "pin": ICON_PIN,
         "fam": ICON_FAMILY,
