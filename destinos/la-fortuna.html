@@ -30,6 +30,14 @@
       <div class="stays"><span class="pill" style="border-color:rgba(255,255,255,.4)">22 - 25 agosto · Hotel Monte Real</span></div>
       <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 60V30c150-25 300 25 450 10s300-35 450-10 300 30 300 10V60Z" fill="rgba(255,255,255,0.15)"/></svg>
     </div>
+<div class="subhead-row"><h4>Diario del destino</h4></div>
+<div class="diary-wrap">
+  <textarea id="diary-text" class="diary-textarea" rows="4" placeholder="¿Qué tal fue La Fortuna en general? Impresión global, cosas que no os queréis olvidar..."></textarea>
+  <div class="diary-actions">
+    <button type="button" id="diary-save" class="diary-save">Guardar</button>
+    <span id="diary-status" class="diary-status"></span>
+  </div>
+</div>
 <div class="subhead-row"><h4>Actividades</h4></div>
 <div class="activity-grid"><a class="activity-card" href="../actividades/catarata-la-fortuna.html">
         <div class="activity-thumb" style="background:linear-gradient(135deg, var(--guanacaste), #b8391f 120%)">
@@ -65,8 +73,8 @@
     <div class="link-row"><a class="link-tile primary" href="https://www.amazon.es/photos/share/trnVVg21peBkWC0rAV3aatmV2iJz4c0WdI9g0drAxmI" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4Z"/><circle cx="12" cy="13.5" r="3.5"/></svg><span>Ver fotos del destino</span></a></div>
   </div>
   <div>
-    <div class="subhead-row"><h4>Documentación del destino</h4></div>
-    <div class="link-row"><a class="link-tile c-hoja" href="https://drive.google.com/file/d/1ZncVSqUYh9DVN9LPHGudUqfsc8jZ0vaG/view?usp=drive_link" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24"><path d="M14 3v5h5M6 3h8l5 5v13H6z"/></svg><span>Voucher hotel Monte Real</span></a></div>
+    <div class="subhead-row"><h4>Mapa de la zona</h4></div>
+    <div class="link-row"><a class="link-tile" href="https://www.google.com/maps/search/?api=1&query=La%20Fortuna%2C%20Costa%20Rica" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/></svg><span>Ver mapa de la zona</span></a></div>
   </div>
 </div>
 </main>
@@ -77,6 +85,6 @@
   </div>
 </footer>
 <script src="../assets/js/main.js"></script>
-
+<script>initDiary("dest-la-fortuna", "https://script.google.com/macros/s/AKfycbziOfCLs46y5h_gM2jmwPOUVF_DNPjeSZgk9gBtt0Cppp5sJvBiMegHIWqIGxLCl7zFKQ/exec");</script>
 </body>
 </html>

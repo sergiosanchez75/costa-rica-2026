@@ -33,6 +33,7 @@ ICON_CALENDAR = '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10
 ICON_FAMILY = '<circle cx="8" cy="7" r="2.6"/><circle cx="17" cy="8" r="2.2"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M14.5 14.3c2.5.3 4.5 2.6 4.5 5.7"/>'
 ICON_PHONE = '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
 ICON_TICKET = '<path d="M3 9a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path d="M13 6v1.5M13 11v2M13 16.5V18"/>'
+ICON_MAP = '<path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/>'
 
 # Colores del sistema que se van rotando para etiquetas de documentos.
 TAG_COLORS = ["hoja", "mango", "oceano", "guanacaste", "ciudad"]
@@ -382,17 +383,6 @@ def link_tile(label, url, icon, primary=False):
     return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelo en data.py</span></span>' % label
 
 
-def doc_tiles(docs, icon, empty_label):
-    """Una lista de documentos -> una tile por documento (cada una con un color distinto
-    del sistema), o un hueco discontinuo si está vacía."""
-    if not docs:
-        return '<span class="link-tile empty"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>%s — añádelos en data.py</span></span>' % empty_label
-    tiles = []
-    for i, d in enumerate(docs):
-        tiles.append('<a class="link-tile c-%s" href="%s" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24">%s</svg><span>%s</span></a>' % (tag_color(i), d["url"], icon, d["label"]))
-    return "".join(tiles)
-
-
 def info_value_html(r):
     """Una fila de 'info': texto suelto, o un enlace de llamada ("tel": True)
     o de WhatsApp ("wa": True)."""
@@ -708,8 +698,19 @@ def build_destinations():
                 "desc": (a["description"][:90] + "…") if len(a["description"]) > 90 else a["description"],
             })
 
+        maps_url = "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(d["name"] + ", Costa Rica")
+        diary_id = "dest-%s" % d["id"]
+
         body = '''<div class="crumb"><a href="../index.html">Inicio</a> / %(name)s</div>
 %(dest_hero)s
+<div class="subhead-row"><h4>Diario del destino</h4></div>
+<div class="diary-wrap">
+  <textarea id="diary-text" class="diary-textarea" rows="4" placeholder="¿Qué tal fue %(name)s en general? Impresión global, cosas que no os queréis olvidar..."></textarea>
+  <div class="diary-actions">
+    <button type="button" id="diary-save" class="diary-save">Guardar</button>
+    <span id="diary-status" class="diary-status"></span>
+  </div>
+</div>
 <div class="subhead-row"><h4>Actividades</h4></div>
 <div class="activity-grid">%(acts)s</div>
 <div class="grid-2">
@@ -718,19 +719,20 @@ def build_destinations():
     <div class="link-row">%(photos)s</div>
   </div>
   <div>
-    <div class="subhead-row"><h4>Documentación del destino</h4></div>
-    <div class="link-row">%(docs)s</div>
+    <div class="subhead-row"><h4>Mapa de la zona</h4></div>
+    <div class="link-row">%(maps)s</div>
   </div>
 </div>''' % {
             "name": d["name"], "dest_hero": dest_hero, "acts": "".join(act_cards),
             "photos": link_tile("Ver fotos del destino", d["photos_url"], ICON_CAMERA, primary=True),
-            "docs": doc_tiles(d["docs"], ICON_DOC, "Documentos del destino"),
+            "maps": link_tile("Ver mapa de la zona", maps_url, ICON_MAP),
         }
 
         html = layout(
             "%s — %s" % (d["name"], data.TRIP_TITLE),
             "%s. %s" % (d["subtitle"], d["intro"]),
             depth=1, active=d["id"], body=body,
+            extra_script="<script>initDiary(%s, %s);</script>" % (json.dumps(diary_id), json.dumps(data.TRIP_API_URL)),
         )
         write("destinos/%s.html" % d["id"], html)
 
@@ -750,9 +752,6 @@ def build_activities():
 </div>
 <p style="font-size:15px; opacity:.85; max-width:60ch; margin:0 0 8px;">%(desc)s</p>
 
-<div class="subhead-row"><h4>Documentación</h4></div>
-<div class="link-row">%(docs)s</div>
-
 <div class="subhead-row"><h4>Diario del día</h4></div>
 <div class="diary-wrap">
   <textarea id="diary-text" class="diary-textarea" rows="5" placeholder="¿Qué tal fue? Escribe aquí lo que hicisteis, anécdotas, lo que veáis..."></textarea>
@@ -766,7 +765,6 @@ def build_activities():
 <a class="link-tile" href="../destinos/%(did)s.html">&larr; Volver a %(dname)s</a>''' % {
             "did": d["id"], "dname": d["name"], "title": a["title"], "color": d["color"],
             "day": a["day_label"], "time": a["time"], "desc": a["description"],
-            "docs": doc_tiles(a["docs"], ICON_DOC, "Entradas, vouchers"),
         }
 
         html = layout(
