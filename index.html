@@ -19,6 +19,8 @@
   </div>
 </nav>
 <header class="hero">
+  <img class="hero-photo" src="assets/images/hero-costa-rica.jpg" alt="Niebla elevándose sobre la selva tropical de Costa Rica, vista desde la montaña">
+  <div class="hero-overlay"></div>
   <div class="critter critter--toucan" aria-hidden="true"><svg viewBox="0 0 120 120">
       <rect x="10" y="95" width="100" height="6" rx="3" fill="#6b4226"/>
       <path d="M40 70 Q20 85 15 100 Q35 95 48 78 Z" fill="#0d1a15"/>
@@ -58,7 +60,9 @@
     <h2>A dónde vamos</h2>
   </div>
   <div class="dest-grid"><a class="dest-card" href="destinos/san-jose.html">
-      <div class="top" style="background:linear-gradient(135deg, var(--ciudad), #443a5e 120%)">
+      <div class="top" style="--tint:var(--ciudad)">
+        <img class="dest-card-photo" src="assets/images/san-jose.jpg" alt="Fachada del Teatro Nacional de San José, Costa Rica, con su plaza y transeúntes" style="object-position:center 35%" loading="lazy">
+        <div class="dest-card-overlay"></div>
         <div class="dest-card-critter"><svg viewBox="0 0 120 120">
       <rect x="10" y="95" width="100" height="6" rx="3" fill="#6b4226"/>
       <path d="M40 70 Q20 85 15 100 Q35 95 48 78 Z" fill="#0d1a15"/>
@@ -83,7 +87,9 @@
         <span class="dest-card-count">1 actividad</span>
       </div>
     </a><a class="dest-card" href="destinos/tortuguero.html">
-      <div class="top" style="background:linear-gradient(135deg, var(--oceano), #145f73 120%)">
+      <div class="top" style="--tint:var(--oceano)">
+        <img class="dest-card-photo" src="assets/images/tortuguero.jpg" alt="Barca navegando por un canal de Tortuguero rodeado de selva tropical densa" style="object-position:center 55%" loading="lazy">
+        <div class="dest-card-overlay"></div>
         <div class="dest-card-critter"><svg viewBox="0 0 120 90">
       <path d="M30 30 C10 20 4 10 14 6 C26 4 34 18 36 32 Z" fill="#1c8ca8"/>
       <path d="M90 30 C110 20 116 10 106 6 C94 4 86 18 84 32 Z" fill="#1c8ca8"/>
@@ -105,7 +111,9 @@
         <span class="dest-card-count">3 actividades</span>
       </div>
     </a><a class="dest-card" href="destinos/la-fortuna.html">
-      <div class="top" style="background:linear-gradient(135deg, var(--guanacaste), #b8391f 120%)">
+      <div class="top" style="--tint:var(--guanacaste)">
+        <img class="dest-card-photo" src="assets/images/arenal-la-fortuna.jpg" alt="Volcán Arenal bajo cielo despejado, con vegetación tropical en primer plano" style="object-position:center 40%" loading="lazy">
+        <div class="dest-card-overlay"></div>
         <div class="dest-card-critter"><svg viewBox="0 0 140 110">
       <path d="M8 100 L58 26 L82 26 L132 100 Z" fill="#3f4a3a"/>
       <path d="M58 26 L70 8 L82 26 Z" fill="#12211c"/>
@@ -124,7 +132,9 @@
         <span class="dest-card-count">3 actividades</span>
       </div>
     </a><a class="dest-card" href="destinos/manuel-antonio.html">
-      <div class="top" style="background:linear-gradient(135deg, var(--mango), #c96a0d 120%)">
+      <div class="top" style="--tint:var(--mango)">
+        <img class="dest-card-photo" src="assets/images/manuel-antonio.jpg" alt="Vista aérea de la península y playa de Manuel Antonio sobre el océano Pacífico" style="object-position:30% 55%" loading="lazy">
+        <div class="dest-card-overlay"></div>
         <div class="dest-card-critter"><svg viewBox="0 0 120 120">
       <path d="M85 90 C105 95 108 75 95 68" stroke="#3b2a1d" stroke-width="8" stroke-linecap="round" fill="none"/>
       <ellipse cx="60" cy="75" rx="24" ry="28" fill="#3b2a1d"/>
@@ -420,7 +430,10 @@
 </section>
 </main>
 <footer>
-  <div class="wrap"><p>Cuaderno de viaje — Costa Rica 2026 · 18 - 30 agosto 2026</p></div>
+  <div class="wrap">
+    <p>Cuaderno de viaje — Costa Rica 2026 · 18 - 30 agosto 2026</p>
+    <p class="photo-credits">Fotos vía Wikimedia Commons: San José © Andres Alvarez (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · La Fortuna © Leonora (Ellie) Enking (<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>) · Manuel Antonio © Mario Roberto Durán Ortiz (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)</p>
+  </div>
 </footer>
 <script src="assets/js/main.js"></script>
 

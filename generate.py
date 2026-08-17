@@ -75,6 +75,31 @@ GRADIENTS = {
     "mango": "linear-gradient(135deg, var(--mango), #c96a0d 120%)",
 }
 
+# Fotografias de cabecera por destino (assets/images/). Todas de Wikimedia
+# Commons, licencias libres (dominio publico o CC-BY-SA con credito abajo).
+DEST_PHOTO = {
+    "san-jose": {
+        "file": "san-jose.jpg",
+        "alt": "Fachada del Teatro Nacional de San José, Costa Rica, con su plaza y transeúntes",
+        "pos": "center 35%",
+    },
+    "tortuguero": {
+        "file": "tortuguero.jpg",
+        "alt": "Barca navegando por un canal de Tortuguero rodeado de selva tropical densa",
+        "pos": "center 55%",
+    },
+    "la-fortuna": {
+        "file": "arenal-la-fortuna.jpg",
+        "alt": "Volcán Arenal bajo cielo despejado, con vegetación tropical en primer plano",
+        "pos": "center 40%",
+    },
+    "manuel-antonio": {
+        "file": "manuel-antonio.jpg",
+        "alt": "Vista aérea de la península y playa de Manuel Antonio sobre el océano Pacífico",
+        "pos": "30% 55%",
+    },
+}
+
 # --------------------------------------------------------- critters SVG --
 
 CRITTERS = {
@@ -418,7 +443,10 @@ def layout(title, description, depth, active, body, hero="", extra_script=""):
 %(body)s
 </main>
 <footer>
-  <div class="wrap"><p>Cuaderno de viaje — Costa Rica 2026 · %(dates)s</p></div>
+  <div class="wrap">
+    <p>Cuaderno de viaje — Costa Rica 2026 · %(dates)s</p>
+    <p class="photo-credits">Fotos vía Wikimedia Commons: San José © Andres Alvarez (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · La Fortuna © Leonora (Ellie) Enking (<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>) · Manuel Antonio © Mario Roberto Durán Ortiz (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>)</p>
+  </div>
 </footer>
 <script src="%(js)s"></script>
 %(extra_script)s
@@ -455,6 +483,8 @@ def build_index():
     )
 
     hero = '''<header class="hero">
+  <img class="hero-photo" src="assets/images/hero-costa-rica.jpg" alt="Niebla elevándose sobre la selva tropical de Costa Rica, vista desde la montaña">
+  <div class="hero-overlay"></div>
   %(toucan)s
   <div class="wrap">
     <p class="hero-eyebrow">Cuaderno de viaje</p>
@@ -496,8 +526,11 @@ def build_index():
             '<p class="dest-card-activity"><svg class="icon" viewBox="0 0 24 24">%s</svg>%s</p>' % (ICON_PIN, main_activity)
             if main_activity else ""
         )
+        photo = DEST_PHOTO[d["id"]]
         cards.append('''<a class="dest-card" href="destinos/%(id)s.html">
-      <div class="top" style="background:%(grad)s">
+      <div class="top" style="--tint:var(--%(color)s)">
+        <img class="dest-card-photo" src="assets/images/%(photo_file)s" alt="%(photo_alt)s" style="object-position:%(photo_pos)s" loading="lazy">
+        <div class="dest-card-overlay"></div>
         <div class="dest-card-critter">%(critter)s</div>
         <p class="k">%(stay)s</p>
         <h3>%(name)s</h3>
@@ -508,7 +541,8 @@ def build_index():
         <span class="dest-card-count">%(n)s %(word)s</span>
       </div>
     </a>''' % {
-            "id": d["id"], "grad": GRADIENTS[d["color"]], "stay": d["stays"][0]["dates"],
+            "id": d["id"], "color": d["color"], "stay": d["stays"][0]["dates"],
+            "photo_file": photo["file"], "photo_alt": photo["alt"], "photo_pos": photo["pos"],
             "critter": CRITTERS[card_critter[d["id"]]], "hotel_icon": ICON_HOTEL, "hotel": hotels,
             "activity": activity_html,
             "name": d["name"], "n": len(acts),
@@ -621,7 +655,10 @@ def build_destinations():
             for s in d["stays"]
         )
 
-        dest_hero = '''<div class="dest-hero" style="background:%(grad)s">
+        photo = DEST_PHOTO[d["id"]]
+        dest_hero = '''<div class="dest-hero" style="--tint:var(--%(color)s)">
+      <img class="dest-hero-photo" src="../assets/images/%(photo_file)s" alt="%(photo_alt)s" style="object-position:%(photo_pos)s" loading="lazy">
+      <div class="dest-hero-overlay"></div>
       %(crit1)s%(crit2)s
       <p class="k">%(subtitle)s</p>
       <h1>%(name)s</h1>
@@ -629,7 +666,8 @@ def build_destinations():
       <div class="stays">%(stays)s</div>
       <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 60V30c150-25 300 25 450 10s300-35 450-10 300 30 300 10V60Z" fill="rgba(255,255,255,0.15)"/></svg>
     </div>''' % {
-            "grad": GRADIENTS[d["color"]],
+            "color": d["color"],
+            "photo_file": photo["file"], "photo_alt": photo["alt"], "photo_pos": photo["pos"],
             "crit1": critter_div(crit_map[d["id"]], "critter--sloth" if False else ""),
             "crit2": critter_div(extra_crit_map[d["id"]]) if d["id"] in extra_crit_map else "",
             "subtitle": d["subtitle"], "name": d["name"], "intro": d["intro"], "stays": stays_html,
