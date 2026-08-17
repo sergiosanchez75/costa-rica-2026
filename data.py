@@ -355,6 +355,9 @@ USEFUL_INFO = [
 # hoja necesita una pequeña API delante (Google Apps Script, gratis, ligado a
 # tu cuenta de Google) en vez de un simple "publicar como CSV".
 #
+# El mismo Apps Script tambien guarda el "Diario del dia" de cada actividad
+# (mas abajo, ACTIVITIES), asi que TRIP_API_URL sirve para las dos cosas.
+#
 # COMO CONECTARLO (una sola vez)
 # ------------------------------------------------
 # 1. Crea una Google Sheet nueva. En Apps Script se crea sola la cabecera la
@@ -372,15 +375,15 @@ USEFUL_INFO = [
 #    - Ejecutar como: Yo
 #    - Quien tiene acceso: Cualquier usuario
 #    Implementar, y autoriza el acceso cuando te lo pida (es tu propia hoja).
-# 5. Copia la URL que te da (termina en /exec) y pegala en EXPENSES_API_URL.
+# 5. Copia la URL que te da (termina en /exec) y pegala en TRIP_API_URL.
 # 6. Ejecuta "python generate.py" otra vez.
 #
 # Instrucciones completas, con capturas de cada paso, en GUIA.md.
 #
-# Mientras EXPENSES_API_URL este en None, la pagina de Gastos muestra un
-# hueco explicando como conectarlo.
+# Mientras TRIP_API_URL este en None, la pagina de Gastos muestra un hueco
+# explicando como conectarlo, y el Diario del dia no deja guardar.
 
-EXPENSES_API_URL = "https://script.google.com/macros/s/AKfycbyoUSH_xYhEDM1InzxfDzLNbpqRJ2Zpo-Yb2gOAOBQbnwkZwSW1QRhT5uH2VgRjBqZEhw/exec"
+TRIP_API_URL = "https://script.google.com/macros/s/AKfycbyoUSH_xYhEDM1InzxfDzLNbpqRJ2Zpo-Yb2gOAOBQbnwkZwSW1QRhT5uH2VgRjBqZEhw/exec"
 
 EXPENSE_CATEGORIES = [
     {"label": "Avión", "color": "#6e5d8c"},

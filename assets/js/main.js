@@ -439,3 +439,51 @@ function initExpenseForm(cfg) {
     }
   });
 }
+
+/* ---------------- Diario del día (por actividad) ---------------- */
+
+async function initDiary(activityId, apiUrl) {
+  var textEl = document.getElementById('diary-text');
+  var saveBtn = document.getElementById('diary-save');
+  var statusEl = document.getElementById('diary-status');
+  if (!textEl || !saveBtn || !statusEl) return;
+
+  if (!apiUrl) {
+    textEl.disabled = true;
+    textEl.placeholder = 'Conecta la API en TRIP_API_URL (data.py) para poder guardar el diario.';
+    saveBtn.disabled = true;
+    return;
+  }
+
+  statusEl.textContent = 'Cargando…';
+  try {
+    var res = await fetch(apiUrl + '?resource=diario', { cache: 'no-store' });
+    var data = await res.json();
+    if (data.ok) {
+      var entry = data.items.find(function (it) { return it.activityId === activityId; });
+      textEl.value = entry ? entry.texto : '';
+    }
+    statusEl.textContent = '';
+  } catch (err) {
+    statusEl.textContent = 'No se ha podido cargar el diario.';
+  }
+
+  saveBtn.addEventListener('click', async function () {
+    saveBtn.disabled = true;
+    statusEl.textContent = 'Guardando…';
+    try {
+      var res = await fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify({ resource: 'diario', activityId: activityId, texto: textEl.value }),
+      });
+      var data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'error');
+      statusEl.textContent = 'Guardado ✓';
+      setTimeout(function () { statusEl.textContent = ''; }, 2500);
+    } catch (err) {
+      statusEl.textContent = 'No se ha podido guardar. Inténtalo de nuevo.';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+}

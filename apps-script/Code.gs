@@ -1,8 +1,10 @@
 /**
- * Costa Rica 2026 — API de gastos.
+ * Costa Rica 2026 — API del viaje (gastos + diario del día).
  *
- * Convierte esta Google Sheet en una pequeña API (leer / añadir / editar /
- * borrar) que usa la web del viaje para la página de Gastos.
+ * Convierte esta Google Sheet en una pequeña API que usa la web del viaje
+ * para dos cosas:
+ *   - La página de Gastos (leer / añadir / editar / borrar gastos).
+ *   - El "Diario del día" de cada actividad (leer / guardar texto libre).
  *
  * INSTALACIÓN
  * 1. Abre (o crea) la Google Sheet donde quieres guardar los gastos.
@@ -14,18 +16,25 @@
  *      - Quién tiene acceso: Cualquier usuario
  * 5. Autoriza el acceso cuando te lo pida (es tu propia hoja, es normal
  *    que Google avise de que es un script "no verificado" — es tuyo).
- * 6. Copia la URL que termina en /exec y pégala en EXPENSES_API_URL,
+ * 6. Copia la URL que termina en /exec y pégala en TRIP_API_URL,
  *    dentro de data.py.
  *
- * La hoja usa (y crea sola si hace falta) esta cabecera en la fila 1, en
- * este orden de columnas exacto (A, B, C, D, E, F). El script identifica
- * las columnas por posición, no por el texto de la cabecera, para evitar
- * problemas si algún acento se pega distinto:
+ * GASTOS: usa la primera pestaña de la hoja (la crea con cabecera si hace
+ * falta), con esta cabecera en la fila 1, por posición (A-F), no por texto:
  *   A: ID | B: Fecha | C: Tipo de Gasto | D: Descripción | E: Lugar | F: Importe
+ *
+ * DIARIO: usa (y crea sola si hace falta) una segunda pestaña llamada
+ * "Diario", con columnas A: ActivityId | B: Texto.
  */
 
 var COL = { ID: 0, FECHA: 1, TIPO: 2, DESCRIPCION: 3, LUGAR: 4, IMPORTE: 5 };
 var HEADERS = ['ID', 'Fecha', 'Tipo de Gasto', 'Descripción', 'Lugar', 'Importe'];
+
+var DIARIO_SHEET_NAME = 'Diario';
+var DIARIO_COL = { ACTIVITY_ID: 0, TEXTO: 1 };
+var DIARIO_HEADERS = ['ActivityId', 'Texto'];
+
+/* ---------------------------------------------------------------- gastos */
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -65,17 +74,79 @@ function readAll_() {
   return items;
 }
 
+/* ---------------------------------------------------------------- diario */
+
+function getDiarioSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(DIARIO_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(DIARIO_SHEET_NAME);
+  }
+  if (sheet.getLastRow() < 1) {
+    sheet.getRange(1, 1, 1, DIARIO_HEADERS.length).setValues([DIARIO_HEADERS]);
+  }
+  return sheet;
+}
+
+function readDiario_() {
+  var sheet = getDiarioSheet_();
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  var values = sheet.getRange(2, 1, lastRow - 1, DIARIO_HEADERS.length).getValues();
+  var items = [];
+  for (var r = 0; r < values.length; r++) {
+    var row = values[r];
+    if (!row[DIARIO_COL.ACTIVITY_ID]) continue;
+    items.push({
+      rowNumber: r + 2,
+      activityId: String(row[DIARIO_COL.ACTIVITY_ID] || ''),
+      texto: String(row[DIARIO_COL.TEXTO] || ''),
+    });
+  }
+  return items;
+}
+
+function saveDiario_(activityId, texto) {
+  var sheet = getDiarioSheet_();
+  var items = readDiario_();
+  var target = null;
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].activityId === activityId) { target = items[i]; break; }
+  }
+  if (target) {
+    sheet.getRange(target.rowNumber, DIARIO_COL.TEXTO + 1).setValue(texto);
+  } else {
+    var row = [];
+    row[DIARIO_COL.ACTIVITY_ID] = activityId;
+    row[DIARIO_COL.TEXTO] = texto;
+    sheet.appendRow(row);
+  }
+}
+
+/* ------------------------------------------------------------------ web */
+
 function jsonOut_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doGet(e) {
+  var resource = e.parameter && e.parameter.resource;
+  if (resource === 'diario') {
+    return jsonOut_({ ok: true, items: readDiario_() });
+  }
   return jsonOut_({ ok: true, items: readAll_() });
 }
 
 function doPost(e) {
   try {
     var body = JSON.parse(e.postData.contents);
+
+    if (body.resource === 'diario') {
+      if (!body.activityId) return jsonOut_({ ok: false, error: 'missing_fields' });
+      saveDiario_(body.activityId, body.texto || '');
+      return jsonOut_({ ok: true });
+    }
+
     var action = body.action;
     var sheet = getSheet_();
 

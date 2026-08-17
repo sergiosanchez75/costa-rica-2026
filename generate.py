@@ -540,6 +540,15 @@ def build_activities():
 <div class="subhead-row"><h4>Documentación</h4></div>
 <div class="link-row">%(docs)s</div>
 
+<div class="subhead-row"><h4>Diario del día</h4></div>
+<div class="diary-wrap">
+  <textarea id="diary-text" class="diary-textarea" rows="5" placeholder="¿Qué tal fue? Escribe aquí lo que hicisteis, anécdotas, lo que veáis..."></textarea>
+  <div class="diary-actions">
+    <button type="button" id="diary-save" class="diary-save">Guardar</button>
+    <span id="diary-status" class="diary-status"></span>
+  </div>
+</div>
+
 <div class="subhead-row"><h4></h4></div>
 <a class="link-tile" href="../destinos/%(did)s.html">&larr; Volver a %(dname)s</a>''' % {
             "did": d["id"], "dname": d["name"], "title": a["title"], "color": d["color"],
@@ -551,6 +560,7 @@ def build_activities():
             "%s — %s" % (a["title"], data.TRIP_TITLE),
             "%s. %s" % (a["day_label"], a["description"]),
             depth=1, active=d["id"], body=body,
+            extra_script="<script>initDiary(%s, %s);</script>" % (json.dumps(a["id"]), json.dumps(data.TRIP_API_URL)),
         )
         write("actividades/%s.html" % a["id"], html)
 
@@ -627,7 +637,7 @@ def build_info_interes():
 
 def build_gastos():
     pass_hash = hashlib.sha256(data.GASTOS_PASSWORD.encode("utf-8")).hexdigest()
-    api_url = data.EXPENSES_API_URL
+    api_url = data.TRIP_API_URL
 
     if api_url:
         content_html = '''<div id="expense-cards" class="exp-cards"></div>
@@ -647,7 +657,7 @@ def build_gastos():
       <ul>
         <li>Crea una Google Sheet y, en ella, ve a <b>Extensiones → Apps Script</b>.</li>
         <li>Pega el contenido de <code>apps-script/Code.gs</code> (en este proyecto) y despliega como <b>Aplicación web</b> (Ejecutar como: Yo · Acceso: Cualquier usuario).</li>
-        <li>Pega la URL que te da (termina en <code>/exec</code>) en <code>EXPENSES_API_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
+        <li>Pega la URL que te da (termina en <code>/exec</code>) en <code>TRIP_API_URL</code> (data.py) y ejecuta <code>python generate.py</code> otra vez.</li>
         <li>Pasos completos en <code>GUIA.md</code>.</li>
       </ul>
     </div>'''

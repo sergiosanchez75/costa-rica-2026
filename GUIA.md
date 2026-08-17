@@ -51,7 +51,7 @@ Como una Sheet normal no permite escribir desde fuera, hace falta una pequeña A
    - Quién tiene acceso: **Cualquier usuario**
    - Pulsa **Implementar**.
 5. Google te pedirá autorizar el acceso (es tu propia hoja — verás un aviso de "app no verificada", es normal para scripts personales; pulsa Avanzado → ir a la app).
-6. Copia la URL que termina en `/exec` y pégala en `EXPENSES_API_URL` (arriba de la sección de gastos en `data.py`).
+6. Copia la URL que termina en `/exec` y pégala en `TRIP_API_URL` (arriba de la sección de gastos en `data.py`) — este mismo Apps Script sirve también para el Diario del día de cada actividad.
 7. Ejecuta `python generate.py`, guarda y sube los cambios.
 
 A partir de ahí, todo se hace desde la web: el botón **+** abre un formulario (fecha con calendario, tipo de gasto, descripción, lugar e importe — fecha, tipo e importe son obligatorios), y cada gasto de la lista tiene un lapicero para editarlo o borrarlo. Los cambios se guardan directamente en tu Google Sheet.
@@ -60,7 +60,11 @@ Notas:
 - `Tipo de Gasto` solo puede ser uno de los valores de `EXPENSE_CATEGORIES` en `data.py` (Avión, Hoteles, Transportes, Actividades, Comidas, Snacks, Compras Varias, Seguro Viaje, eSim) — el desplegable del formulario ya los ofrece, no hace falta escribirlos a mano.
 - Privacidad: la URL de Apps Script solo la conocéis quienes la tengan (no está indexada ni es adivinable), pero no está protegida por la contraseña de Gastos en sí misma — es el mismo nivel de privacidad que los enlaces de Drive que ya usas para documentos.
 
-**Si vuelves a tocar el código del script más adelante**: en Apps Script, guardar el código NO actualiza la URL `/exec` que ya está en marcha — hace falta volver a desplegar. Lo más fiable es **Implementar → Nueva implementación** (te da una URL nueva, que hay que actualizar en `EXPENSES_API_URL`) en vez de editar la implementación existente, que a veces no aplica bien el código nuevo ni mantiene el "Cualquier usuario" en el acceso.
+**Si vuelves a tocar el código del script más adelante**: en Apps Script, guardar el código NO actualiza la URL `/exec` que ya está en marcha — hace falta volver a desplegar. Lo más fiable es **Implementar → Nueva implementación** (te da una URL nueva, que hay que actualizar en `TRIP_API_URL`) en vez de editar la implementación existente, que a veces no aplica bien el código nuevo ni mantiene el "Cualquier usuario" en el acceso.
+
+## Diario del día (dentro de cada actividad)
+
+Cada página de actividad tiene un cuadro de texto para escribir qué tal fue — se guarda en una segunda pestaña ("Diario") de la misma Google Sheet de gastos, usando el mismo `TRIP_API_URL`. No hace falta nada más si ya tienes los gastos conectados: en cuanto actualices el Apps Script con la versión de `apps-script/Code.gs` que incluye el diario, funciona también para esto.
 
 ## Publicar en GitHub Pages (para abrir la web desde el móvil)
 

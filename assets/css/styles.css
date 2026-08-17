@@ -499,3 +499,19 @@ footer a{opacity:.85;}
 
 .grid-2{display:grid; grid-template-columns:1.15fr .85fr; gap:32px;}
 @media (max-width:860px){ .grid-2{grid-template-columns:1fr;} }
+
+/* ---------- DIARIO DEL DÍA ---------- */
+.diary-wrap{display:flex; flex-direction:column; gap:10px; max-width:60ch;}
+.diary-textarea{
+  font-family:var(--font-body); font-size:14.5px; line-height:1.6; color:var(--tinta);
+  background:var(--niebla); border:1px solid var(--line); border-radius:12px; padding:14px 16px; resize:vertical;
+}
+.diary-textarea:disabled{opacity:.6; cursor:not-allowed;}
+.diary-actions{display:flex; align-items:center; gap:12px;}
+.diary-save{
+  font-family:var(--font-ui); font-size:13px; letter-spacing:.03em; text-transform:uppercase; font-weight:700;
+  background:var(--hoja); color:#fff; border:1px solid var(--hoja); border-radius:9px; padding:10px 20px; cursor:pointer;
+}
+.diary-save:hover{background:var(--hoja-ink);}
+.diary-save:disabled{opacity:.6; cursor:not-allowed;}
+.diary-status{font-family:var(--font-ui); font-size:12px; opacity:.65;}
