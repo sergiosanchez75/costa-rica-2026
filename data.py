@@ -328,8 +328,16 @@ USEFUL_INFO = [
     {"title": "Embajada de España en Costa Rica", "subtitle": "San José · emergencias consulares", "info": [
         {"label": "Teléfono", "value": "+506 2222 1933", "tel": True},
     ], "docs": []},
-    {"title": "Holiday Inn Express San José", "subtitle": "Hotel — hay varias sedes con este nombre, confirma el de tu reserva", "info": [], "docs": []},
-    {"title": "Laguna Lodge — Tortuguero", "subtitle": "Hotel — número sin confirmar", "info": [], "docs": []},
+    {"title": "Holiday Inn Express San José", "subtitle": "Hotel", "info": [
+        {"label": "Teléfono", "value": "(506) 2443 0043", "tel": True},
+        {"label": "WhatsApp", "value": "+1 844 781 2655", "wa": True},
+    ], "docs": []},
+    {"title": "Laguna Lodge — Tortuguero", "subtitle": "Hotel", "info": [
+        {"label": "Teléfono", "value": "+506 8318 3851", "tel": True},
+    ], "docs": []},
+    {"title": "Héctor — guía Parque Nacional Manuel Antonio", "subtitle": "Guía de la excursión", "info": [
+        {"label": "Teléfono", "value": "+506 8585 2139", "tel": True},
+    ], "docs": []},
     {"title": "Hotel Monte Real — La Fortuna", "subtitle": "Hotel", "info": [
         {"label": "Teléfono", "value": "+506 2479 9357", "tel": True},
     ], "docs": []},

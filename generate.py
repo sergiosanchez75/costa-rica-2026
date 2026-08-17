@@ -248,6 +248,18 @@ def doc_tiles(docs, icon, empty_label):
     return "".join(tiles)
 
 
+def info_value_html(r):
+    """Una fila de 'info': texto suelto, o un enlace de llamada ("tel": True)
+    o de WhatsApp ("wa": True)."""
+    if r.get("wa"):
+        digits = "".join(c for c in r["value"] if c.isdigit())
+        return '<a class="v tel" href="https://wa.me/%s" target="_blank" rel="noopener">%s</a>' % (digits, r["value"])
+    if r.get("tel"):
+        tel = "".join(c for c in r["value"] if c.isdigit() or c == "+")
+        return '<a class="v tel" href="tel:%s">%s</a>' % (tel, r["value"])
+    return '<span class="v">%s</span>' % r["value"]
+
+
 def doc_item(item):
     icon = ICON_DOC
     docs = item.get("docs", [])
@@ -255,11 +267,7 @@ def doc_item(item):
 
     if info:
         info_rows = "".join(
-            '<div class="info-row"><span class="k">%s</span>%s</div>' % (
-                r["label"],
-                '<a class="v tel" href="tel:%s">%s</a>' % (r["value"].replace(" ", ""), r["value"]) if r.get("tel")
-                else '<span class="v">%s</span>' % r["value"],
-            )
+            '<div class="info-row"><span class="k">%s</span>%s</div>' % (r["label"], info_value_html(r))
             for r in info
         )
         links = "".join(
