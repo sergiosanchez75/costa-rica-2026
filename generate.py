@@ -211,6 +211,7 @@ def nav_html(depth, active):
     items = [("index", "Inicio", p + "index.html")]
     for d in data.DESTINATIONS:
         items.append((d["id"], d["name"], p + "destinos/%s.html" % d["id"]))
+    items.append(("info-interes", "Información de interés", p + "info-interes.html"))
     items.append(("documentos", "Documentos", p + "documentos.html"))
     items.append(("gastos", "Gastos", p + "gastos.html"))
 
@@ -586,7 +587,6 @@ def build_documentos():
         doc_category_html("Hoteles", "hotel", "hoja", hotel_items),
         doc_category_html("Transportes", "transfer", "oceano", data.TRANSPORT_DOCS),
         doc_category_html("Excursiones", "ticket", "guanacaste", excursion_items),
-        doc_category_html("Información de interés", "phone", "mango", data.USEFUL_INFO),
         doc_category_html("Varios", "shield", "ciudad", data.MISC_DOCS),
     ]
 
@@ -604,6 +604,27 @@ def build_documentos():
         depth=0, active="documentos", body=body,
     )
     write("documentos.html", html)
+
+
+# ======================================================= info-interes.html ==
+
+def build_info_interes():
+    items_html = "".join(doc_item(i) for i in data.USEFUL_INFO)
+
+    body = '''<div class="crumb"><a href="index.html">Inicio</a> / Información de interés</div>
+<div class="sec-head">
+  <p class="sec-eyebrow">Por si hace falta</p>
+  <h2>Información de interés</h2>
+  <p>Teléfonos y contactos útiles del viaje: aerolíneas, embajada, hoteles y guías. Se edita en <code>USEFUL_INFO</code>, dentro de <code>data.py</code>.</p>
+</div>
+<div class="doc-list">%(items)s</div>''' % {"items": items_html}
+
+    html = layout(
+        "Información de interés — %s" % data.TRIP_TITLE,
+        "Teléfonos y contactos útiles del viaje a Costa Rica.",
+        depth=0, active="info-interes", body=body,
+    )
+    write("info-interes.html", html)
 
 
 # =========================================================== gastos.html ==
@@ -725,5 +746,6 @@ if __name__ == "__main__":
     build_destinations()
     build_activities()
     build_documentos()
+    build_info_interes()
     build_gastos()
     print("Listo.")
