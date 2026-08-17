@@ -383,7 +383,7 @@ USEFUL_INFO = [
 # Mientras TRIP_API_URL este en None, la pagina de Gastos muestra un hueco
 # explicando como conectarlo, y el Diario del dia no deja guardar.
 
-TRIP_API_URL = "https://script.google.com/macros/s/AKfycbyoUSH_xYhEDM1InzxfDzLNbpqRJ2Zpo-Yb2gOAOBQbnwkZwSW1QRhT5uH2VgRjBqZEhw/exec"
+TRIP_API_URL = "https://script.google.com/macros/s/AKfycbziOfCLs46y5h_gM2jmwPOUVF_DNPjeSZgk9gBtt0Cppp5sJvBiMegHIWqIGxLCl7zFKQ/exec"
 
 EXPENSE_CATEGORIES = [
     {"label": "Avión", "color": "#6e5d8c"},
