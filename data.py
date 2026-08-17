@@ -347,6 +347,35 @@ USEFUL_INFO = [
     ], "docs": []},
 ]
 
+# Momentos destacados del viaje, para la seccion "Momentos del viaje" de
+# inicio. "scene" es la clave de la ilustracion en MOMENT_SCENES (generate.py).
+MOMENTS = [
+    {
+        "scene": "tortugas", "title": "Tortugas desovando", "place": "Tortuguero", "color": "oceano",
+        "desc": "De noche, en la playa de Tortuguero, con un poco de suerte veremos a las tortugas marinas salir a poner sus huevos.",
+    },
+    {
+        "scene": "canales", "title": "Canales de Tortuguero", "place": "Tortuguero", "color": "oceano",
+        "desc": "Al pueblo solo se llega en barca: horas navegando canales entre selva densa, monos y caimanes.",
+    },
+    {
+        "scene": "volcan", "title": "Volcán Arenal", "place": "La Fortuna", "color": "guanacaste",
+        "desc": "El volcán preside todo La Fortuna — se ve desde el pueblo, desde el hotel, desde la carretera.",
+    },
+    {
+        "scene": "puentes", "title": "Puentes Colgantes", "place": "La Fortuna", "color": "guanacaste",
+        "desc": "Un paseo colgado sobre el bosque nuboso, con vistas al Arenal desde las alturas.",
+    },
+    {
+        "scene": "monos", "title": "Monos y perezosos", "place": "Manuel Antonio", "color": "mango",
+        "desc": "El Parque Nacional Manuel Antonio es de los pocos donde se ven monos y perezosos casi asegurado.",
+    },
+    {
+        "scene": "atardecer", "title": "Atardecer y ballenas", "place": "Manuel Antonio / Uvita", "color": "mango",
+        "desc": "Excursión a Uvita para ver ballenas, y atardeceres en Playa Espadilla para cerrar el día.",
+    },
+]
+
 # ============================================================================
 # GASTOS DEL VIAJE — leidos y escritos en una Google Sheet, via Apps Script.
 # ============================================================================
@@ -387,9 +416,9 @@ USEFUL_INFO = [
 TRIP_API_URL = "https://script.google.com/macros/s/AKfycbziOfCLs46y5h_gM2jmwPOUVF_DNPjeSZgk9gBtt0Cppp5sJvBiMegHIWqIGxLCl7zFKQ/exec"
 
 EXPENSE_CATEGORIES = [
-    {"label": "Avión", "color": "#6e5d8c"},
+    {"label": "Avión", "color": "#9c6b3f"},
     {"label": "Hoteles", "color": "#2f9e6e"},
-    {"label": "Transportes", "color": "#1c8ca8"},
+    {"label": "Transportes", "color": "#178f74"},
     {"label": "Actividades", "color": "#e0563f"},
     {"label": "Comidas", "color": "#ef8a17"},
     {"label": "Snacks", "color": "#f0c419"},
@@ -400,8 +429,8 @@ EXPENSE_CATEGORIES = [
 
 EXPENSE_PLACES = [
     {"label": "General", "color": "#8a8f86"},
-    {"label": "San Jose", "color": "#6e5d8c"},
-    {"label": "Tortuguero", "color": "#1c8ca8"},
+    {"label": "San Jose", "color": "#9c6b3f"},
+    {"label": "Tortuguero", "color": "#178f74"},
     {"label": "La Fortuna", "color": "#e0563f"},
     {"label": "Manuel Antonio", "color": "#ef8a17"},
 ]
