@@ -1,5 +1,6 @@
-// Costa Rica 2026 — comportamiento compartido: menú móvil, cortina de gastos
-// y el lector/editor de la Google Sheet de gastos (via Apps Script).
+// Costa Rica 2026 — comportamiento compartido: menú móvil, cortina de
+// contraseña (Gastos y Documentos) y el lector/editor de la Google Sheet
+// de gastos y diario (via Apps Script).
 
 function toggleNav() {
   var links = document.getElementById('nav-links');
@@ -14,25 +15,23 @@ async function sha256Hex(text) {
   }).join('');
 }
 
-function unlockGastos(expenseConfig) {
+/**
+ * Cortina de contraseña genérica, compartida por Gastos y Documentos.
+ * `onUnlock` (opcional) se llama justo después de desbloquear, para que
+ * cada página pueda cargar lo que le haga falta.
+ */
+function initPasswordGate(expectedHash, onUnlock) {
   var lock = document.getElementById('gastos-lock');
   var content = document.getElementById('gastos-content');
-  if (lock) lock.classList.add('hide');
-  if (content) content.classList.add('show');
 
-  var fab = document.getElementById('exp-add-btn');
-  if (expenseConfig && expenseConfig.apiUrl) {
-    if (fab) fab.classList.add('show');
-    initExpenseForm(expenseConfig);
-    loadExpenses(expenseConfig);
-  } else if (fab) {
-    fab.classList.remove('show');
+  function unlock() {
+    if (lock) lock.classList.add('hide');
+    if (content) content.classList.add('show');
+    if (onUnlock) onUnlock();
   }
-}
 
-function initGastos(expectedHash, expenseConfig) {
-  if (sessionStorage.getItem('cr26-gastos-unlocked') === '1') {
-    unlockGastos(expenseConfig);
+  if (sessionStorage.getItem('cr26-unlocked') === '1') {
+    unlock();
   }
   var form = document.getElementById('pass-form');
   if (!form) return;
@@ -42,14 +41,31 @@ function initGastos(expectedHash, expenseConfig) {
     var error = document.getElementById('pass-error');
     var hash = await sha256Hex(input.value);
     if (hash === expectedHash) {
-      sessionStorage.setItem('cr26-gastos-unlocked', '1');
+      sessionStorage.setItem('cr26-unlocked', '1');
       error.classList.remove('show');
-      unlockGastos(expenseConfig);
+      unlock();
     } else {
       error.classList.add('show');
       input.select();
     }
   });
+}
+
+function initGastos(expectedHash, expenseConfig) {
+  initPasswordGate(expectedHash, function () {
+    var fab = document.getElementById('exp-add-btn');
+    if (expenseConfig && expenseConfig.apiUrl) {
+      if (fab) fab.classList.add('show');
+      initExpenseForm(expenseConfig);
+      loadExpenses(expenseConfig);
+    } else if (fab) {
+      fab.classList.remove('show');
+    }
+  });
+}
+
+function initDocumentos(expectedHash) {
+  initPasswordGate(expectedHash, null);
 }
 
 /* ---------------- Gastos: lectura/escritura via Apps Script ---------------- */

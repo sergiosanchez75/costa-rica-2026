@@ -33,9 +33,9 @@ Puedes ir haciendo esto poco a poco durante el viaje, incluso desde el móvil ed
 
 Los documentos que no pertenecen a un destino o actividad concreta (vuelos, traslados, seguro...) se editan en `TRANSPORT_DOCS` y `MISC_DOCS`.
 
-## Cambiar la contraseña de gastos
+## Cambiar la contraseña de Gastos y Documentos
 
-Edita `GASTOS_PASSWORD` en `data.py` y regenera. Recuerda: es solo una "cortina" en el propio navegador (evita que alguien entre sin querer), no seguridad real — cualquiera que mire el código fuente de `gastos.html` puede ver el hash. Suficiente para uso familiar, no para datos sensibles de verdad.
+Es la misma para las dos páginas. Edita `SITE_PASSWORD` en `data.py` y regenera. Recuerda: es solo una "cortina" en el propio navegador (evita que alguien entre sin querer), no seguridad real — cualquiera que mire el código fuente puede ver el hash. Suficiente para uso familiar, no para datos sensibles de verdad.
 
 ## Gastos del día a día (comidas, snacks, ubers...)
 

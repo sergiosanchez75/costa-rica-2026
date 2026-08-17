@@ -271,15 +271,18 @@ def doc_item(item):
             '<div class="info-row"><span class="k">%s</span>%s</div>' % (r["label"], info_value_html(r))
             for r in info
         )
-        links = "".join(
-            '<a class="doc-link c-%s" href="%s" target="_blank" rel="noopener">%s</a>' % (tag_color(i), d["url"], d["label"])
-            for i, d in enumerate(docs)
-        ) if docs else '<span class="doc-link empty">Añadir documentos</span>'
+        docs_html = ""
+        if docs:
+            links = "".join(
+                '<a class="doc-link c-%s" href="%s" target="_blank" rel="noopener">%s</a>' % (tag_color(i), d["url"], d["label"])
+                for i, d in enumerate(docs)
+            )
+            docs_html = '<div class="doc-links">%s</div>' % links
         return '''<div class="doc-item doc-item--rich">
       <div class="doc-item-head"><svg class="icon" viewBox="0 0 24 24">%s</svg><div class="n"><b>%s</b><span>%s</span></div></div>
       <div class="doc-info">%s</div>
-      <div class="doc-links">%s</div>
-    </div>''' % (icon, item["title"], item["subtitle"], info_rows, links)
+      %s
+    </div>''' % (icon, item["title"], item["subtitle"], info_rows, docs_html)
 
     if docs:
         links = "".join(
@@ -596,18 +599,34 @@ def build_documentos():
         doc_category_html("Varios", "shield", "ciudad", data.MISC_DOCS),
     ]
 
+    pass_hash = hashlib.sha256(data.SITE_PASSWORD.encode("utf-8")).hexdigest()
+
     body = '''<div class="crumb"><a href="index.html">Inicio</a> / Documentos</div>
 <div class="sec-head">
   <p class="sec-eyebrow">Todo en un sitio</p>
   <h2>Documentación del viaje</h2>
-  <p>Hoteles y excursiones se rellenan desde las páginas de cada destino/actividad en <code>data.py</code>; transportes y varios se editan aquí abajo. Lo que aún no tiene enlace se muestra discontinuo.</p>
 </div>
-%(cats)s''' % {"cats": "".join(cats_html)}
+
+<div id="gastos-lock" class="lock-wrap">
+  <div class="lock-badge"><svg class="icon" viewBox="0 0 24 24" style="stroke:var(--niebla)">%(lock_icon)s</svg></div>
+  <h2 style="margin:0;">Contenido privado</h2>
+  <p class="hint">Introduce la contraseña para ver la documentación.</p>
+  <form id="pass-form" class="pass-form">
+    <input id="gastos-pass" type="password" placeholder="Contraseña" autocomplete="off">
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="pass-error" class="pass-error">Contraseña incorrecta, inténtalo de nuevo.</p>
+</div>
+
+<div id="gastos-content">
+%(cats)s
+</div>''' % {"lock_icon": ICON_LOCK, "cats": "".join(cats_html)}
 
     html = layout(
         "Documentos — %s" % data.TRIP_TITLE,
-        "Hoteles, transportes, excursiones y otros documentos del viaje a Costa Rica.",
+        "Hoteles, transportes, excursiones y otros documentos del viaje a Costa Rica (privado).",
         depth=0, active="documentos", body=body,
+        extra_script="<script>initDocumentos(%s);</script>" % repr(pass_hash),
     )
     write("documentos.html", html)
 
@@ -621,7 +640,7 @@ def build_info_interes():
 <div class="sec-head">
   <p class="sec-eyebrow">Por si hace falta</p>
   <h2>Información de interés</h2>
-  <p>Teléfonos y contactos útiles del viaje: aerolíneas, embajada, hoteles y guías. Se edita en <code>USEFUL_INFO</code>, dentro de <code>data.py</code>.</p>
+  <p>Teléfonos y contactos útiles del viaje: aerolíneas, embajada, hoteles y guías.</p>
 </div>
 <div class="doc-list">%(items)s</div>''' % {"items": items_html}
 
@@ -636,7 +655,7 @@ def build_info_interes():
 # =========================================================== gastos.html ==
 
 def build_gastos():
-    pass_hash = hashlib.sha256(data.GASTOS_PASSWORD.encode("utf-8")).hexdigest()
+    pass_hash = hashlib.sha256(data.SITE_PASSWORD.encode("utf-8")).hexdigest()
     api_url = data.TRIP_API_URL
 
     if api_url:
