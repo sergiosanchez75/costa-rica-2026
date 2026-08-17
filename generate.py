@@ -447,6 +447,12 @@ def doc_item(item):
 
 def layout(title, description, depth, active, body, hero="", extra_script=""):
     p = "" if depth == 0 else "../"
+    title_font = ""
+    if active == "index":
+        title_font = '''<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+'''
     return '''<!doctype html>
 <html lang="es">
 <head>
@@ -455,7 +461,7 @@ def layout(title, description, depth, active, body, hero="", extra_script=""):
 <title>%(title)s</title>
 <meta name="description" content="%(description)s">
 %(favicon)s
-<link rel="stylesheet" href="%(css)s">
+%(title_font)s<link rel="stylesheet" href="%(css)s">
 </head>
 <body>
 %(nav)s
@@ -476,6 +482,7 @@ def layout(title, description, depth, active, body, hero="", extra_script=""):
         "title": title,
         "description": description,
         "favicon": favicon_link(),
+        "title_font": title_font,
         "css": p + "assets/css/styles.css",
         "nav": nav_html(depth, active),
         "hero": hero,
@@ -532,7 +539,6 @@ def build_index():
     }
 
     # tarjetas de destino
-    card_critter = {"san-jose": "toucan", "tortuguero": "turtle", "la-fortuna": "volcano", "manuel-antonio": "monkey"}
     cards = []
     for d in data.DESTINATIONS:
         acts = activities_for(d["id"])
@@ -547,7 +553,6 @@ def build_index():
       <div class="top" style="--tint:var(--%(color)s)">
         <img class="dest-card-photo" src="assets/images/%(photo_file)s" alt="%(photo_alt)s" style="object-position:%(photo_pos)s" loading="lazy">
         <div class="dest-card-overlay"></div>
-        <div class="dest-card-critter">%(critter)s</div>
         <p class="k">%(stay)s</p>
         <h3>%(name)s</h3>
       </div>
@@ -559,7 +564,7 @@ def build_index():
     </a>''' % {
             "id": d["id"], "color": d["color"], "stay": d["stays"][0]["dates"],
             "photo_file": photo["file"], "photo_alt": photo["alt"], "photo_pos": photo["pos"],
-            "critter": CRITTERS[card_critter[d["id"]]], "hotel_icon": ICON_HOTEL, "hotel": hotels,
+            "hotel_icon": ICON_HOTEL, "hotel": hotels,
             "activity": activity_html,
             "name": d["name"], "n": len(acts),
             "word": "actividad" if len(acts) == 1 else "actividades",
@@ -663,8 +668,6 @@ def build_index():
 def build_destinations():
     for d in data.DESTINATIONS:
         acts = activities_for(d["id"])
-        crit_map = {"san-jose": "toucan", "tortuguero": "turtle", "la-fortuna": "volcano", "manuel-antonio": "monkey"}
-        extra_crit_map = {"la-fortuna": "sloth", "manuel-antonio": "morpho"}
 
         stays_html = "".join(
             '<span class="pill" style="border-color:rgba(255,255,255,.4)">%s · %s</span>' % (s["dates"], s["hotel"])
@@ -675,7 +678,6 @@ def build_destinations():
         dest_hero = '''<div class="dest-hero" style="--tint:var(--%(color)s)">
       <img class="dest-hero-photo" src="../assets/images/%(photo_file)s" alt="%(photo_alt)s" style="object-position:%(photo_pos)s" loading="lazy">
       <div class="dest-hero-overlay"></div>
-      %(crit1)s%(crit2)s
       <p class="k">%(subtitle)s</p>
       <h1>%(name)s</h1>
       <p class="sub">%(intro)s</p>
@@ -684,8 +686,6 @@ def build_destinations():
     </div>''' % {
             "color": d["color"],
             "photo_file": photo["file"], "photo_alt": photo["alt"], "photo_pos": photo["pos"],
-            "crit1": critter_div(crit_map[d["id"]], "critter--sloth" if False else ""),
-            "crit2": critter_div(extra_crit_map[d["id"]]) if d["id"] in extra_crit_map else "",
             "subtitle": d["subtitle"], "name": d["name"], "intro": d["intro"], "stays": stays_html,
         }
 
