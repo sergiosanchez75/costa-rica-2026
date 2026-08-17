@@ -58,7 +58,7 @@ DESTINATIONS = [
             {"dates": "29 - 30 agosto", "hotel": "Holiday Inn Express San José"},
         ],
         "intro": "La puerta de entrada y salida del viaje: una tarde para pasear por el centro antes de salir hacia la selva, y una última noche de piscina y descanso antes del vuelo de vuelta.",
-        "photos_url": None,
+        "photos_url": "https://www.amazon.es/photos/share/u8rsug3xt8BYpySYnhkJK5EX4R2EffJ3xOeQhGSX7eL",
         "docs": [
             {"label": "Confirmación recepción hotel", "url": "https://drive.google.com/file/d/1x2NgRnMRe9wQvxcNW7kp_LI7oLxRFFjX/view?usp=drive_link"},
             {"label": "Hotel 18-20 agosto", "url": "https://drive.google.com/file/d/1YFIrOZ9XNwknPJVBOn84haf7SLlnROF_/view?usp=drive_link"},
@@ -75,7 +75,7 @@ DESTINATIONS = [
             {"dates": "20 - 22 agosto", "hotel": "Laguna Lodge"},
         ],
         "intro": "Un pueblo al que solo se llega en barca, rodeado de canales. Monos, caimanes y, si hay suerte, tortugas desovando de noche en la playa.",
-        "photos_url": None,
+        "photos_url": "https://www.amazon.es/photos/share/qdnDzZb3vlaaAsC9gNGgsXLz4J2KQ4HTUDzWXVjVBgd",
         "docs": [
             {"label": "Voucher hotel Laguna Lodge", "url": "https://drive.google.com/file/d/1h_OaFFEqFQylDMm_TmAvr6FaqhAOGaFX/view?usp=drive_link"},
         ],
@@ -90,7 +90,7 @@ DESTINATIONS = [
             {"dates": "22 - 25 agosto", "hotel": "Hotel Monte Real"},
         ],
         "intro": "Tres días a los pies del volcán Arenal: cascada, puentes colgantes sobre el bosque nuboso y aguas termales para descansar.",
-        "photos_url": None,
+        "photos_url": "https://www.amazon.es/photos/share/trnVVg21peBkWC0rAV3aatmV2iJz4c0WdI9g0drAxmI",
         "docs": [
             {"label": "Voucher hotel Monte Real", "url": "https://drive.google.com/file/d/1ZncVSqUYh9DVN9LPHGudUqfsc8jZ0vaG/view?usp=drive_link"},
         ],
@@ -105,7 +105,7 @@ DESTINATIONS = [
             {"dates": "25 - 29 agosto", "hotel": "Iglú Beach Lodge"},
         ],
         "intro": "Selva y playa a la vez: el parque nacional con sus monos y perezosos, atardeceres en Espadilla y una excursión a Uvita a ver ballenas.",
-        "photos_url": None,
+        "photos_url": "https://www.amazon.es/photos/share/Y5pOcJ1GAaAn8qS0pNthnKdqkeoB2M4P6bbjVyaJz6O",
         "docs": [
             {"label": "Voucher hotel Iglú Beach Lodge", "url": "https://drive.google.com/file/d/1wwMQCsitWTzIsVGdUrDtg0pHi0sF4_dZ/view?usp=drive_link"},
         ],
