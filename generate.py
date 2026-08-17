@@ -33,7 +33,7 @@ ICON_CALENDAR = '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10
 ICON_FAMILY = '<circle cx="8" cy="7" r="2.6"/><circle cx="17" cy="8" r="2.2"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M14.5 14.3c2.5.3 4.5 2.6 4.5 5.7"/>'
 ICON_PHONE = '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'
 ICON_TICKET = '<path d="M3 9a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path d="M13 6v1.5M13 11v2M13 16.5V18"/>'
-ICON_MAP = '<path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/>'
+ICON_EXTERNAL = '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/>'
 
 # Colores del sistema que se van rotando para etiquetas de documentos.
 TAG_COLORS = ["hoja", "mango", "oceano", "guanacaste", "ciudad"]
@@ -698,7 +698,13 @@ def build_destinations():
                 "desc": (a["description"][:90] + "…") if len(a["description"]) > 90 else a["description"],
             })
 
-        maps_url = "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(d["name"] + ", Costa Rica")
+        maps_query = urllib.parse.quote(d["name"] + ", Costa Rica")
+        maps_url = "https://www.google.com/maps/search/?api=1&query=" + maps_query
+        maps_embed_url = "https://www.google.com/maps?q=" + maps_query + "&output=embed"
+        maps_embed = '''<div class="map-embed">
+      <iframe src="%(embed)s" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa de %(name)s"></iframe>
+      <a class="map-open" href="%(link)s" target="_blank" rel="noopener" aria-label="Abrir mapa de %(name)s en Google Maps"><svg class="icon" viewBox="0 0 24 24">%(icon)s</svg></a>
+    </div>''' % {"embed": maps_embed_url, "link": maps_url, "name": d["name"], "icon": ICON_EXTERNAL}
         diary_id = "dest-%s" % d["id"]
 
         body = '''<div class="crumb"><a href="../index.html">Inicio</a> / %(name)s</div>
@@ -720,12 +726,12 @@ def build_destinations():
   </div>
   <div>
     <div class="subhead-row"><h4>Mapa de la zona</h4></div>
-    <div class="link-row">%(maps)s</div>
+    %(maps)s
   </div>
 </div>''' % {
             "name": d["name"], "dest_hero": dest_hero, "acts": "".join(act_cards),
             "photos": link_tile("Ver fotos del destino", d["photos_url"], ICON_CAMERA, primary=True),
-            "maps": link_tile("Ver mapa de la zona", maps_url, ICON_MAP),
+            "maps": maps_embed,
         }
 
         html = layout(
